@@ -181,7 +181,7 @@ function Brand({ state, t }: BodyProps) {
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       <Eyebrow t={t}>Origin · Heritage · Ecosystem</Eyebrow>
       <Title t={t} sub="Two decades of direct relationships with Indonesian smallholders, translated into a European bistro that serves from first coffee to last plate.">
-        Brand Ecosystem & Farm-Direct Sourcing
+        Great Indonesian Food, Coffee & Culture
       </Title>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.15fr', gap: 18, marginTop: 20, flex: 1, minHeight: 0, paddingBottom: 18 }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
