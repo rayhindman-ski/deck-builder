@@ -373,13 +373,27 @@ function Unit(p: BodyProps) {
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, marginTop: 16 }}>
         {[
-          ['Annualisation basis', `${state.fin.days} days × 52 weeks = ${model.annualDays} operating days`],
-          ['Year 1 gross revenue', `${fmtEur(model.revYear)} from ${fmtNum(model.guestsYear)} guests`],
-          ['Year 1 profit estimate', fmtEur(model.profitYearLow)],
-        ].map(([k, v]) => (
-          <div key={k} style={card(t, { padding: '12px 14px' })}>
-            <div style={{ fontFamily: MONO, fontSize: 9.5, letterSpacing: '0.1em', textTransform: 'uppercase', color: t.accent }}>{k}</div>
-            <div style={{ fontSize: 13.5, fontWeight: 600, color: t.ink, marginTop: 4 }}>{v}</div>
+          { title: 'Annualisation basis', lines: [
+            `${state.fin.days} operating days per week`,
+            '52 weeks per year',
+            `${model.annualDays} operating days per year`,
+          ] },
+          { title: 'Year 1 gross revenue', lines: [
+            `${fmtEur(model.revYear)} annual gross revenue`,
+            `${fmtNum(model.guestsYear)} guests per year`,
+            `${fmtEur(model.revDay)} average daily revenue`,
+          ] },
+          { title: 'Year 1 profit estimate', lines: [
+            `${fmtEur(model.profitYearLow)} estimated annual gross profit`,
+            `${state.fin.marginFood}% conservative gross margin`,
+            'Before staffing, rent and other operating costs',
+          ] },
+        ].map(({ title, lines }) => (
+          <div key={title} style={card(t, { padding: '18px 20px', minHeight: 190 })}>
+            <div style={{ fontFamily: MONO, fontSize: 9.5, letterSpacing: '0.1em', textTransform: 'uppercase', color: t.accent }}>{title}</div>
+            <ul style={{ listStyleType: 'disc', paddingLeft: 18, margin: '14px 0 0', display: 'grid', gap: 12, fontSize: 13.5, fontWeight: 500, color: t.ink, lineHeight: 1.6 }}>
+              {lines.map(line => <li key={line}>{line}</li>)}
+            </ul>
           </div>
         ))}
       </div>
@@ -400,7 +414,7 @@ function Monthly(p: BodyProps) {
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead><tr>
             <th style={{ ...th(t), ...cell }}>Month</th><th style={{ ...th(t, true), ...cell }}>Cal. days</th><th style={{ ...th(t, true), ...cell }}>Op. days</th>
-            <th style={{ ...th(t, true), ...cell }}>Guests</th><th style={{ ...th(t, true), ...cell }}>Gross revenue</th><th style={{ ...th(t, true), ...cell }}>Profit low</th><th style={{ ...th(t, true), ...cell }}>Profit high</th>
+            <th style={{ ...th(t, true), ...cell }}>Guests</th><th style={{ ...th(t, true), ...cell }}>Gross revenue</th><th style={{ ...th(t, true), ...cell }}>Profit estimate</th>
           </tr></thead>
           <tbody>
             {model.months.map((m) => (
@@ -411,7 +425,6 @@ function Monthly(p: BodyProps) {
                 <td style={{ ...td(t, true), ...cell, fontSize: 11 }}>{fmtNum(m.guests)}</td>
                 <td style={{ ...td(t, true), ...cell, fontSize: 11 }}>{fmtEur(m.revenue)}</td>
                 <td style={{ ...td(t, true), ...cell, fontSize: 11 }}>{fmtEur(m.low)}</td>
-                <td style={{ ...td(t, true), ...cell, fontSize: 11 }}>{fmtEur(m.high)}</td>
               </tr>
             ))}
             <tr style={{ background: t.accentSoft }}>
@@ -420,11 +433,13 @@ function Monthly(p: BodyProps) {
               <td style={{ ...td(t, true, true), ...cell }}>{fmtNum(tt.guests)}</td>
               <td style={{ ...td(t, true, true), ...cell, color: t.accent }}>{fmtEur(tt.revenue)}</td>
               <td style={{ ...td(t, true, true), ...cell }}>{fmtEur(tt.low)}</td>
-              <td style={{ ...td(t, true, true), ...cell }}>{fmtEur(tt.high)}</td>
             </tr>
           </tbody>
         </table>
       </div>
+      <p style={{ fontSize: 11, color: t.muted, lineHeight: 1.5, marginTop: 12 }}>
+        Conservative gross profit estimate at a {state.fin.marginFood}% margin, before staffing, rent and other operating costs.
+      </p>
     </div>
   );
 }
