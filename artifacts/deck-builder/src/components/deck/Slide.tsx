@@ -289,7 +289,7 @@ function Shifts(p: BodyProps) {
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       {p.interactive && p.scenario && <ScenarioBar {...p} />}
       <Eyebrow t={t}>Three Dayparts · One Room</Eyebrow>
-      <Title t={t} sub="Each shift carries its own guest profile and ticket. Revenue does not depend on a single rush.">Shift Revenue Architecture</Title>
+      <Title t={t} sub="Each shift carries its own guest profile and ticket. Revenue does not depend on a single rush.">Shift Revenue Overview</Title>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, marginTop: 22, flex: 1, paddingBottom: 18 }}>
         {model.shifts.map((s, i) => (
           <div key={s.key} style={card(t, { padding: '20px 22px', display: 'flex', flexDirection: 'column', borderTop: `4px solid ${i === 2 ? t.second : t.accent}` })}>
