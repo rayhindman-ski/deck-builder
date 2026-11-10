@@ -180,8 +180,9 @@ function Brand({ state, t }: BodyProps) {
   const domain = (u: string) => u.replace(/^https?:\/\//, '').replace(/\/$/, '');
   const brandTitle = (url: string, fallback: string) => {
     const host = domain(url).replace(/^www\./i, '').split(/[/?#]/)[0]?.toLowerCase();
-    if (host === 'rayanacoffees.com') return 'Rayana Indonesian Coffees';
+    if (host === 'rayanacoffees.com') return 'Rayana Coffees';
     if (host === 'rayanaroast.com') return 'Rayana Roast';
+    if (isBistroSource(url)) return 'Rayana Bistro';
     return fallback || domain(url);
   };
   const brandDescription = (url: string, notes: string, summary: string) => {
