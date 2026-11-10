@@ -45,7 +45,7 @@ Use “Indonesian Bites. Farm Direct Specialty Coffee” in place of “Den Haag
 
 **How to apply:** Keep Rayana's Bistro as the main subject on page two, with the chosen slogan beneath it. “Farm Direct” is allowed in this slogan; its removal applies to the logo lettering only.
 
-The third brand website is `www.rayanabisto.com`. On slide three, its badge reads “Authentic Indo Flavors,” not “Coming soon.” Its description is “Original Indonesia Recipies hand crafted served with a smile like the warm tropical sun”.
+The third brand website is `www.rayanabisto.com`. On slide three, its badge reads “Yana's Kitchen,” not “Coming soon.” Its description is “Original Indonesia Recipies hand crafted served with a smile like the warm tropical sun”.
 
 **Why:** The user supplied this exact domain spelling and launch status.
 

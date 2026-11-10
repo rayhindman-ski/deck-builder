@@ -31,6 +31,7 @@ export const defaultAssets = (): Asset[] => [
 export const isBistroSource = (url: string) => /^https?:\/\/(?:www\.)?rayanabisto\.com(?:[/?#]|$)/i.test(url);
 
 export const BISTRO_DESCRIPTION = 'Original Indonesia Recipies hand crafted served with a smile like the warm tropical sun';
+export const COFFEE_DESCRIPTION = 'Farm-direct coffee import and Trading from small artisen farms across Indonesia.';
 export const bistroSource = (): UrlEntry => ({
   id: 'u3-bistro', url: 'https://www.rayanabisto.com', role: 'Menu & Catering',
   status: null, title: "Rayana's Bistro", summary: '', notes: BISTRO_DESCRIPTION,
@@ -38,7 +39,7 @@ export const bistroSource = (): UrlEntry => ({
 });
 
 export const defaultUrls = (): UrlEntry[] => [
-  { id: 'u1', url: 'https://www.rayanacoffees.com', role: 'Primary Brand', status: null, title: 'Rayana Indonesian Coffees', summary: '', notes: 'Farm-direct Indonesian specialty coffee; Sumatra & Java smallholders.', checkedAt: null, error: null },
+  { id: 'u1', url: 'https://www.rayanacoffees.com', role: 'Primary Brand', status: null, title: 'Rayana Indonesian Coffees', summary: '', notes: COFFEE_DESCRIPTION, checkedAt: null, error: null },
   { id: 'u2', url: 'https://www.rayanaroast.com', role: 'Specialty Roastery', status: null, title: 'Rayana Roast', summary: '', notes: 'Small-batch roasting, wholesale supply and barista training.', checkedAt: null, error: null },
   bistroSource(),
 ];

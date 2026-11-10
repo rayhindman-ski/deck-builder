@@ -3,7 +3,7 @@ import type { DeckState, Financials } from '@/lib/types';
 import type { Model } from '@/lib/financial';
 import { fmtEur, fmtEur2, fmtK, fmtNum, PROJECTION_YEAR } from '@/lib/financial';
 import { coverBgOf, FONTS, isDark, LOGO_SIZES, THEMES, type Theme } from '@/lib/themes';
-import { BISTRO_DESCRIPTION, BISTRO_TAGLINE, bistroSource, defaultAssets, isBistroSource, SECTION_TITLES } from '@/lib/defaults';
+import { BISTRO_DESCRIPTION, BISTRO_TAGLINE, COFFEE_DESCRIPTION, bistroSource, defaultAssets, isBistroSource, SECTION_TITLES } from '@/lib/defaults';
 import { Emblem, resolveLogo } from './Emblem';
 import { ShiftInsights } from './ShiftInsights';
 import { SLIDE_COUNT, SLIDE_H, SLIDE_W } from './constants';
@@ -184,6 +184,12 @@ function Brand({ state, t }: BodyProps) {
     if (host === 'rayanaroast.com') return 'Rayana Roast';
     return fallback || domain(url);
   };
+  const brandDescription = (url: string, notes: string, summary: string) => {
+    if (isBistroSource(url) && (!notes || /^coming soon$/i.test(notes.trim()))) return BISTRO_DESCRIPTION;
+    if (/^https?:\/\/(?:www\.)?rayanacoffees\.com(?:[/?#]|$)/i.test(url)
+      && (!notes || notes === 'Farm-direct Indonesian specialty coffee; Sumatra & Java smallholders.')) return COFFEE_DESCRIPTION;
+    return notes || summary;
+  };
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       <Eyebrow t={t}>Origin · Heritage · Ecosystem</Eyebrow>
@@ -196,10 +202,10 @@ function Brand({ state, t }: BodyProps) {
             <div key={u.id} style={card(t, { padding: '13px 16px' })}>
               <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8 }}>
                 <span style={{ fontSize: 15, fontWeight: 700, color: t.ink }}>{brandTitle(u.url, u.title)}</span>
-                <span style={tag(t)}>{isBistroSource(u.url) ? 'Authentic Indo Flavors' : u.role}</span>
+                <span style={tag(t)}>{isBistroSource(u.url) ? "Yana's Kitchen" : u.role}</span>
               </div>
               <div style={{ fontFamily: MONO, fontSize: 11, color: t.accent, marginTop: 3 }}>{domain(u.url)}</div>
-              <div style={{ fontSize: 11.5, color: t.muted, marginTop: 6, lineHeight: 1.45 }}>{(isBistroSource(u.url) && (!u.notes || /^coming soon$/i.test(u.notes.trim())) ? BISTRO_DESCRIPTION : (u.notes || u.summary)).slice(0, 150)}</div>
+              <div style={{ fontSize: 11.5, color: t.muted, marginTop: 6, lineHeight: 1.45 }}>{brandDescription(u.url, u.notes, u.summary).slice(0, 150)}</div>
             </div>
           ))}
           <div style={card(t, { padding: '13px 16px', background: t.accentSoft, borderColor: t.accentSoft, marginTop: 'auto' })}>
