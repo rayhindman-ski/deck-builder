@@ -239,7 +239,7 @@ function Pillars({ state, t }: BodyProps) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       <Eyebrow t={t}>Product Matrix · Revenue Engines</Eyebrow>
-      <Title t={t} sub="Coffee, retail and hands-on learning, alongside Indonesian snacks, bistro meals and catering for every occasion.">Taste, Discover &amp; Gather at Rayana’s</Title>
+      <Title t={t} sub="Coffee, retail and hands-on learning, alongside Indonesian snacks, bistro meals and catering for every occasion.">Taste, Discover &amp; Enjoy at Rayana’s</Title>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gridTemplateRows: 'repeat(2, minmax(0, 1fr))', gap: 14, marginTop: 20, flex: 1, minHeight: 0 }}>
         {pillars.map(([name, m, d, when], i) => (
           <div key={name} style={card(t, { padding: '18px 20px', display: 'flex', flexDirection: 'column' })}>
