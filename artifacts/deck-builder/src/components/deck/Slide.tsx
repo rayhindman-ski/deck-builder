@@ -232,10 +232,10 @@ function Pillars({ state, t }: BodyProps) {
   const pillars = [
     ['Specialty Coffee Bar', mc, 'Single-origin pour-overs, espresso from Gayo and Java Malabar, iced pandan lattes and oat-milk craft drinks.', 'Morning & all-day'],
     ['Roasted Beans Retail', mc, '250g and 1kg bags roasted in-house from Sumatra, Java and Bali Kintamani lots, plus brewing gear.', 'Retail shelf & web'],
-    ['Coffee Wisdom', null, 'Cupping sessions, barista workshops and latte art workshops for curious coffee lovers.', 'Sessions & workshops'],
+    ['Coffee Wisdom', 80, 'Cupping sessions, barista workshops and latte art workshops for curious coffee lovers.', 'Sessions & workshops'],
     ['Snacks & Desserts', mf, 'Spekkoek, risoles, lemper and pastel goreng, baked and folded daily for the counter.', 'Lunch & afternoon'],
     ['Bistro Meals', mf, 'Slow-simmered rendang, mie ayam jamur, gado-gado and a seasonal rijsttafel for the evening room.', 'Midday & evening'],
-    ['Events and Catering', null, 'Bring people together over unforgettable Indonesian flavours.', 'Office · Private party · Special events'],
+    ['Events and Catering', 55, 'Bring people together over unforgettable Indonesian flavours.', 'Office · Private party · Special events'],
   ] as const;
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
@@ -249,7 +249,7 @@ function Pillars({ state, t }: BodyProps) {
                 <span style={{ fontFamily: MONO, fontSize: 12, color: t.accent }}>{String(i + 1).padStart(2, '0')}</span>
                 <span style={{ fontSize: 18, fontWeight: 700, color: t.ink }}>{name}</span>
               </div>
-              <span style={tag(t, i < 2)}>{m === null ? (name === 'Coffee Wisdom' ? 'Workshops' : 'Catering') : `${m}% gross margin`}</span>
+              <span style={tag(t, true)}>{m}% gross margin</span>
             </div>
             <p style={{ fontSize: 12.5, color: t.muted, lineHeight: 1.55, margin: '10px 0 0' }}>{d}</p>
             <div style={{ marginTop: 'auto', fontFamily: MONO, fontSize: 10.5, lineHeight: 1.5, color: t.muted, borderTop: `1px dashed ${t.line}`, paddingTop: 8 }}>{when}</div>
