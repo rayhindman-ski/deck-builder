@@ -3,6 +3,7 @@ import { clearState, loadState, migrate, saveState } from './persistence';
 import { createDefaultState } from './defaults';
 import { compute, type Model } from './financial';
 import type { DeckState, PersistTier } from './types';
+import { withApprovedScenario } from './approved-scenario';
 
 interface Ctx {
   state: DeckState;
@@ -31,6 +32,11 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const [tab, setTab] = useState('style');
   const timer = useRef<number | undefined>(undefined);
 
+  // Also update an already-open editor after hot reload, without replacing user edits later.
+  useEffect(() => {
+    setState(s => s.fin.planningScenarioApplied ? s : { ...s, fin: withApprovedScenario(s.fin) });
+  }, []);
+
   useEffect(() => {
     window.clearTimeout(timer.current);
     timer.current = window.setTimeout(() => {
@@ -47,7 +53,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const reset = useCallback(() => { clearState(); setState(createDefaultState()); setSlideRaw(0); }, []);
   const importJson = useCallback((raw: unknown) => {
     const src = raw && typeof raw === 'object' && 'state' in (raw as object) ? (raw as { state: unknown }).state : raw;
-    setState(migrate(src));
+    setState(migrate(src, false, false));
   }, []);
   const setSlide = useCallback((n: number) => setSlideRaw(Math.max(0, Math.min(8, n))), []);
   const model = useMemo(() => compute(state.fin), [state.fin]);

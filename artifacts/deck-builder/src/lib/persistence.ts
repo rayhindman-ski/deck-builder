@@ -1,5 +1,6 @@
 import { BISTRO_TAGLINE, bistroSource, isBistroSource, createDefaultState, defaultAssets, SECTION_TITLES } from './defaults';
 import type { DeckState, FontId, PersistTier } from './types';
+import { withApprovedScenario } from './approved-scenario';
 
 export const STORAGE_KEY = 'deckBuilder.state.v4';
 const LEGACY_KEYS = ['deckBuilder.state.v3', 'deckBuilder.state.v2', 'deckBuilder.state.v1'];
@@ -13,7 +14,7 @@ const num = (v: unknown, d: number, min = -Infinity, max = Infinity) => {
 };
 
 /** Sanitise any v1–v4 shaped payload into a clean v4 state. */
-export function migrate(raw: unknown, legacy = false): DeckState {
+export function migrate(raw: unknown, legacy = false, applyApproved = true): DeckState {
   const d = createDefaultState();
   if (!isObj(raw)) return d;
   const s = isObj(raw.style) ? raw.style : isObj(raw.styling) ? raw.styling : {};
@@ -45,15 +46,21 @@ export function migrate(raw: unknown, legacy = false): DeckState {
       check,
       foodCheck: optionalAmount(f[k]?.foodCheck, check),
       costsPerDay: optionalAmount(f[k]?.costsPerDay, 100000),
+      staffingPerDay: optionalAmount(f[k]?.staffingPerDay, 100000),
     };
   };
-  const fin = {
+  const finBase = {
+    planningScenarioApplied: f.planningScenarioApplied === true,
+    rentUtilitiesMonthly: optionalAmount(f.rentUtilitiesMonthly, 100000),
     morning: shift('morning'), lunch: shift('lunch'), dinner: shift('dinner'),
     days: Math.round(num(f.days, d.fin.days, 1, 7)),
     marginCoffee: num(f.marginCoffee, d.fin.marginCoffee, 0, 100),
     marginFood: num(f.marginFood, d.fin.marginFood, 0, 100),
     growth: num(f.growth, d.fin.growth, 0, 50),
   };
+  // Loading existing browser state adopts the approved scenario once. Explicit
+  // JSON imports instead preserve the financial figures in the chosen file.
+  const fin = applyApproved ? withApprovedScenario(finBase) : { ...finBase, planningScenarioApplied: true };
 
   const urls = Array.isArray(raw.urls)
     ? raw.urls.filter((u: any) => isObj(u) && typeof u.url === 'string').map((u: any, i: number) => ({

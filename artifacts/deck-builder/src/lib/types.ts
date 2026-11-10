@@ -64,9 +64,12 @@ export interface Shift {
   foodCheck?: number | null;
   /** Staffing and allocated overhead per operating day, excluding ingredients. */
   costsPerDay?: number | null;
+  staffingPerDay?: number | null;
 }
 
 export interface Financials {
+  planningScenarioApplied?: boolean;
+  rentUtilitiesMonthly?: number | null;
   morning: Shift;
   lunch: Shift;
   dinner: Shift;

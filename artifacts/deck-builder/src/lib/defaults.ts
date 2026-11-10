@@ -1,4 +1,5 @@
 import type { DeckState, Asset, UrlEntry, Intake, Audience } from './types';
+import { withApprovedScenario } from './approved-scenario';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 export const pub = (p: string) => `${base}${p}`;
@@ -98,7 +99,7 @@ export const createDefaultState = (): DeckState => ({
   urls: defaultUrls(),
   assets: defaultAssets(),
   intake: { ...PRESETS[0].intake },
-  fin: {
+  fin: withApprovedScenario({
     morning: { guests: 40, check: 10 },
     lunch: { guests: 40, check: 15 },
     dinner: { guests: 40, check: 22 },
@@ -106,7 +107,7 @@ export const createDefaultState = (): DeckState => ({
     marginCoffee: 65,
     marginFood: 30,
     growth: 15,
-  },
+  }),
   toc: SECTION_TITLES.slice(2),
 });
 

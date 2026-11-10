@@ -291,21 +291,21 @@ function Shifts(p: BodyProps) {
       {p.interactive && p.scenario && <ScenarioBar {...p} />}
       <Eyebrow t={t}>Three Dayparts · One Room</Eyebrow>
       <Title t={t} sub="Each shift carries its own guest profile and ticket. Revenue does not depend on a single rush.">Shift Revenue Overview</Title>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, marginTop: 22, flex: 1, paddingBottom: 18 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, marginTop: 16, flex: 1, minHeight: 0, paddingBottom: 10 }}>
         {model.shifts.map((s, i) => (
-          <div key={s.key} style={card(t, { padding: '20px 22px', display: 'flex', flexDirection: 'column', borderTop: `4px solid ${i === 2 ? t.second : t.accent}` })}>
+          <div key={s.key} style={card(t, { padding: '16px 22px', display: 'flex', flexDirection: 'column', borderTop: `4px solid ${i === 2 ? t.second : t.accent}` })}>
             <div style={{ fontFamily: MONO, fontSize: 10.5, color: t.muted }}>{s.hours}</div>
             <div style={{ fontSize: 26, fontWeight: 700, color: t.ink, marginTop: 4 }}>{s.label}</div>
             <div style={{ fontSize: 13, color: t.muted }}>{s.sub}</div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginTop: 22 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginTop: 16 }}>
               <Stat t={t} k="Guests / day" v={fmtNum(s.guests)} />
               <Stat t={t} k="Average check" v={fmtEur2(s.check)} />
             </div>
-            <ShiftInsights shift={state.fin[s.key]} financials={state.fin} theme={t} />
+            <ShiftInsights shift={state.fin[s.key]} shiftKey={s.key} financials={state.fin} theme={t} />
             <div style={{ marginTop: 'auto', paddingTop: 16, borderTop: `1px solid ${t.line}` }}>
               <Stat t={t} k="Daily turnover" v={fmtEur(s.daily)} big />
               <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 10, fontSize: 12, color: t.muted }}>
-                <span>Annual contribution</span>
+                <span>Annual revenue</span>
                 <b style={{ color: t.ink, fontVariantNumeric: 'tabular-nums' }}>{fmtEur(s.annual)}</b>
               </div>
               <div style={{ height: 6, background: t.accentSoft, borderRadius: 3, marginTop: 8, overflow: 'hidden' }}>
@@ -315,6 +315,10 @@ function Shifts(p: BodyProps) {
             </div>
           </div>
         ))}
+      </div>
+      <div style={{ flexShrink: 0, marginTop: 8, fontSize: 9.5, lineHeight: 1.4, color: t.muted, paddingBottom: 10 }}>
+        Planning estimates · Rent + utilities {state.fin.rentUtilitiesMonthly == null ? 'not set' : `${fmtEur(state.fin.rentUtilitiesMonthly)}/month`} · Staffing {model.shifts.map(s => state.fin[s.key].staffingPerDay == null ? '—' : fmtEur(state.fin[s.key].staffingPerDay!)).join(' / ')} per shift · Margins {state.fin.marginFood}% / {state.fin.marginCoffee}% · VAT-exclusive.
+        <br />Break-even excludes insurance, administration, maintenance, financing and tax; not a net-profit forecast.
       </div>
     </div>
   );
