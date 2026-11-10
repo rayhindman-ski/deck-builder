@@ -63,8 +63,7 @@ export function Slide(p: SlideProps) {
       {!isCover && (
         <header style={{ height: 58, padding: '0 44px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: `1px solid ${t.line}`, margin: '14px 14px 0' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            {s.showMiniLogo && logo && <Emblem src={logo.src} invert={false} width={44} />}
-            <span style={{ fontSize: 14, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: t.accent }}>{s.brandTitle}</span>
+            {s.showMiniLogo && logo && <Emblem src={logo.src} invert={false} width={77} />}
           </div>
           {s.showSection && <span style={{ fontSize: 12, letterSpacing: '0.1em', textTransform: 'uppercase', color: t.muted }}>{sectionLabel}</span>}
         </header>
@@ -73,7 +72,7 @@ export function Slide(p: SlideProps) {
         <Body {...p} t={t} ink={ink} muted={muted} coverDark={coverDark} logo={logo} />
       </main>
       <footer style={{ height: 44, margin: '0 14px 14px', padding: '0 44px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontFamily: MONO, fontSize: 10.5, color: muted, borderTop: `1px solid ${coverDark ? 'rgba(247,235,214,0.18)' : t.line}` }}>
-        <span>{s.brandTitle}</span>
+        <span>{isCover ? s.brandTitle : ''}</span>
         <span style={{ fontStyle: 'italic' }}>{s.footerText}</span>
         <span>{num}</span>
       </footer>
@@ -116,7 +115,7 @@ function Cover({ state, model, t, ink, muted, coverDark, logo }: BodyProps) {
         ) : (
           <h1 style={{ fontSize: 58, lineHeight: 1.02, margin: 0, fontWeight: 700, color: ink, letterSpacing: '-0.02em', maxWidth: 860 }}>{state.intake.title}</h1>
         )}
-        <p style={{ fontSize: 17, color: muted, margin: 0, maxWidth: 680, lineHeight: 1.45 }}>{state.intake.subtitle}</p>
+        <p style={{ fontSize: 17, color: muted, margin: 0, maxWidth: 680, lineHeight: 1.45 }}>{state.intake.subtitle.replace(/\s+and\s+three[-‑– ]shift.*$/i, '').trim()}</p>
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12, width: '100%', paddingBottom: 26 }}>
         {kpis.map(([k, v, n]) => (
@@ -472,10 +471,6 @@ function Case({ state, model, t }: BodyProps) {
             <div style={{ fontSize: 12, color: t.muted, marginTop: 5, lineHeight: 1.5 }}>{v}</div>
           </div>
         ))}
-      </div>
-      <div style={{ marginTop: 14, marginBottom: 18, flex: 1, padding: '16px 22px', borderRadius: 10, background: t.ink, color: t.surface, display: 'flex', gap: 24, alignItems: 'center' }}>
-        <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: '0.16em', color: t.accentSoft, whiteSpace: 'nowrap' }}>MANDATE</div>
-        <div style={{ fontSize: 13, lineHeight: 1.55, opacity: 0.92, display: '-webkit-box', WebkitLineClamp: 4, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{state.intake.prompt}</div>
       </div>
     </div>
   );

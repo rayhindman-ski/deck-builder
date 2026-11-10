@@ -1,0 +1,2 @@
+- [Cover branding](cover-branding.md) — cover copy and transparent-logo requirements.
+- [Cross-tab preview](cross-tab-preview.md) — account for storage partitioning between the embedded editor and a top-level preview tab.

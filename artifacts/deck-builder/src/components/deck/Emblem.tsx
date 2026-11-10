@@ -11,10 +11,7 @@ export function resolveLogo(logo: string, assets: Asset[]): { src: string; inver
   return null;
 }
 
-/**
- * The supplied emblem is a raster on cream. Dark treatment multiplies it onto light grounds;
- * the light treatment inverts it and screens it onto dark grounds.
- */
+/** Use the prepared transparent emblem; invert only for its light treatment. */
 export function Emblem({ src, invert, width, className = '' }: { src: string; invert: boolean; width: number; className?: string }) {
   return (
     <img
@@ -28,7 +25,6 @@ export function Emblem({ src, invert, width, className = '' }: { src: string; in
         height: 'auto',
         display: 'block',
         filter: invert ? 'invert(1) sepia(0.35) brightness(1.08)' : 'none',
-        mixBlendMode: invert ? 'screen' : 'multiply',
       }}
     />
   );

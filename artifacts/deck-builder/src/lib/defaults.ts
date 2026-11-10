@@ -3,7 +3,7 @@ import type { DeckState, Asset, UrlEntry, Intake, Audience } from './types';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 export const pub = (p: string) => `${base}${p}`;
 
-export const EMBLEM_SRC = pub('/brand/rayana-bistro-emblem.png');
+export const EMBLEM_SRC = pub('/brand/rayana-bistro-transparent.png');
 export const COFFEE_LOGO_SRC = pub('/brand/rayana-coffees.png');
 
 export const SECTION_TITLES = [
@@ -37,7 +37,7 @@ export const PRESETS: { id: string; label: string; intake: Intake }[] = [
     label: 'Den Haag Flagship',
     intake: {
       title: "Rayana's Bistro — Den Haag Flagship",
-      subtitle: 'Indonesian hospitality, specialty coffee and three-shift economics',
+      subtitle: 'Indonesian hospitality, specialty coffee',
       audience: 'Investors & Commercial Landlords',
       prompt:
         'Position Rayana\'s Bistro as a resilient all-day anchor tenant for a Den Haag high-street unit. Lead with farm-direct Indonesian coffee and heritage snacks, prove that breakfast, lunch and dinner each carry their own footfall, and show conservative-to-strong profit ranges a landlord can underwrite.',

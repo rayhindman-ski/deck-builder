@@ -60,6 +60,7 @@ export function migrate(raw: unknown, legacy = false): DeckState {
 
   const i = isObj(raw.intake) ? raw.intake : {};
   const intake = { ...d.intake, ...Object.fromEntries(Object.entries(i).filter(([k, v]) => k in d.intake && typeof v === 'string')) } as DeckState['intake'];
+  intake.subtitle = intake.subtitle.replace(/\s+and\s+three[-‑– ]shift.*$/i, '').trim();
 
   const toc = (Array.isArray(raw.toc) ? raw.toc : d.toc)
     .map((t: unknown) => String(t).replace(/\|/g, '').replace(/\s{2,}/g, ' ').trim())
