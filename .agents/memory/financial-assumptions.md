@@ -9,6 +9,14 @@ Do not invent basket splits or operating costs for the business. Break-even requ
 
 **How to apply:** Leave unknown assumptions unset until entered, distinguish unset values from explicit zero, and identify the food/drink margins used. Staffing and overhead inputs must exclude ingredient costs already covered by gross margins.
 
+## Financial presentation
+
+Show one conservative **Profit Estimate**, never a low/high profit range. Display euro amounts in full with thousands separators, never shortened with `k` or `M`.
+
+**Why:** The user repeatedly rejected ranges and abbreviated amounts such as “387.5k,” and explicitly said they had already requested their removal.
+
+**How to apply:** Apply this to every slide, chart label, summary card, financial-model screen and export. Gross profit estimates remain before staffing, rent and other operating costs; do not relabel them as net profit.
+
 ## User-supplied planning baseline
 
 Assume rent plus utilities of €3,000/month and 50 guests for each shift.

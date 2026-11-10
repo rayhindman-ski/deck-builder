@@ -55,7 +55,7 @@ export const PRESETS: { id: string; label: string; intake: Intake }[] = [
       subtitle: 'Indonesian hospitality, specialty coffee',
       audience: 'Investors & Commercial Landlords',
       prompt:
-        'Position Rayana\'s Bistro as a resilient all-day anchor tenant for a Den Haag high-street unit. Lead with farm-direct Indonesian coffee and heritage snacks, prove that breakfast, lunch and dinner each carry their own footfall, and show conservative-to-strong profit ranges a landlord can underwrite.',
+        'Position Rayana\'s Bistro as a resilient all-day anchor tenant for a Den Haag high-street unit. Lead with farm-direct Indonesian coffee and heritage snacks, prove that breakfast, lunch and dinner each carry their own footfall, and show a single conservative profit estimate using full euro amounts, not abbreviated numbers or ranges.',
     },
   },
   {

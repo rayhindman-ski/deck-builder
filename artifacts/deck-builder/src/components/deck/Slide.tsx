@@ -1,7 +1,7 @@
 import type { CSSProperties, ReactNode } from 'react';
 import type { DeckState, Financials } from '@/lib/types';
 import type { Model } from '@/lib/financial';
-import { fmtEur, fmtEur2, fmtK, fmtNum, PROJECTION_YEAR } from '@/lib/financial';
+import { fmtEur, fmtEur2, fmtNum, PROJECTION_YEAR } from '@/lib/financial';
 import { coverBgOf, FONTS, isDark, LOGO_SIZES, THEMES, type Theme } from '@/lib/themes';
 import { BISTRO_DESCRIPTION, BISTRO_TAGLINE, COFFEE_DESCRIPTION, bistroSource, defaultAssets, isBistroSource, SECTION_TITLES } from '@/lib/defaults';
 import { Emblem, resolveLogo } from './Emblem';
@@ -466,18 +466,19 @@ function Quarterly(p: BodyProps) {
               <span style={{ fontFamily: MONO, fontSize: 10, color: t.muted }}>{y.year === 1 ? 'Base model' : `+${state.fin.growth}% compounded`}</span>
             </div>
             <div style={{ fontSize: 26, fontWeight: 700, color: t.ink, fontVariantNumeric: 'tabular-nums' }}>{fmtEur(y.revenue)}</div>
-            <div style={{ fontSize: 11, color: t.muted }}>{fmtNum(y.guests)} guests · profit {fmtK(y.low)} – {fmtK(y.high)}</div>
+            <div style={{ fontSize: 11, color: t.muted }}>{fmtNum(y.guests)} dine-in guests</div>
+            <div style={{ fontSize: 12, fontWeight: 600, color: t.ink, marginTop: 3 }}>Profit Estimate: {fmtEur(y.low)}</div>
           </div>
         ))}
       </div>
       <div style={card(t, { marginTop: 14, padding: '14px 18px 10px', flex: 1, marginBottom: 18, display: 'flex', flexDirection: 'column' })}>
-        <div style={{ fontFamily: MONO, fontSize: 10, color: t.muted, marginBottom: 6 }}>Quarterly gross revenue (EUR) · darker band = high-margin profit ceiling</div>
+        <div style={{ fontFamily: MONO, fontSize: 10, color: t.muted, marginBottom: 6 }}>Quarterly revenue (EUR) · shaded portion = gross profit estimate, before staffing, rent and other operating costs</div>
         <div style={{ flex: 1, display: 'flex', alignItems: 'flex-end', gap: 10 }}>
           {model.quarters.map((q, i) => (
             <div key={i} style={{ flex: 1, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', alignItems: 'center' }}>
-              <div style={{ fontFamily: MONO, fontSize: 9, color: t.ink, marginBottom: 3 }}>{fmtK(q.revenue)}</div>
+              <div style={{ fontFamily: MONO, fontSize: 9, color: t.ink, marginBottom: 3 }}>{fmtEur(q.revenue)}</div>
               <div style={{ width: '100%', height: `${(q.revenue / max) * 78}%`, background: q.year === 1 ? t.accentSoft : q.year === 2 ? t.line : t.accentSoft, borderRadius: '4px 4px 0 0', position: 'relative', overflow: 'hidden' }}>
-                <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: `${(q.high / q.revenue) * 100}%`, background: q.year === 3 ? t.second : t.accent, opacity: 0.35 + q.year * 0.2 }} />
+                <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: `${q.revenue > 0 ? (q.low / q.revenue) * 100 : 0}%`, background: q.year === 3 ? t.second : t.accent, opacity: 0.35 + q.year * 0.2 }} />
               </div>
               <div style={{ fontFamily: MONO, fontSize: 9.5, color: t.muted, marginTop: 4 }}>Y{q.year} Q{q.q}</div>
             </div>

@@ -89,5 +89,4 @@ const num = new Intl.NumberFormat('en-IE');
 export const fmtEur = (n: number) => eur0.format(Math.round(n));
 export const fmtEur2 = (n: number) => eur2.format(n);
 export const fmtNum = (n: number) => num.format(Math.round(n));
-export const fmtK = (n: number) => (Math.abs(n) >= 1e6 ? `€${(n / 1e6).toFixed(2)}M` : `€${(n / 1000).toFixed(1)}k`);
 export const fmtPct = (n: number) => `${(n * 100).toFixed(1)}%`;

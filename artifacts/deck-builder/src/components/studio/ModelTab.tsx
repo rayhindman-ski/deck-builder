@@ -9,8 +9,8 @@ export function ModelTab() {
     ['Daily guests', fmtNum(model.guestsDay), `${fmtNum(model.guestsYear)} / year`],
     ['Daily revenue', fmtEur(model.revDay), `avg check ${fmtEur2(model.avgCheck)}`],
     ['Year 1 revenue', fmtEur(model.revYear), `${model.annualDays} operating days`],
-    ['Profit / day', `${fmtEur(model.profitDayLow)} – ${fmtEur(model.profitDayHigh)}`, `${f.marginFood}% to ${f.marginCoffee}%`],
-    ['Year 1 profit', `${fmtEur(model.profitYearLow)} – ${fmtEur(model.profitYearHigh)}`, 'low / high bound'],
+    ['Daily profit estimate', fmtEur(model.profitDayLow), 'Gross, before operating costs'],
+    ['Year 1 profit estimate', fmtEur(model.profitYearLow), 'Gross, before operating costs'],
     ['Year 3 revenue', fmtEur(model.years[2].revenue), `at ${f.growth}% compounding`],
   ];
   return (
