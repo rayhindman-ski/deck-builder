@@ -100,10 +100,10 @@ function Body(p: BodyProps) {
 function Cover({ state, model, t, ink, muted, coverDark, logo }: BodyProps) {
   const size = LOGO_SIZES[state.style.logoSize].px;
   const kpis = [
-    ['Daily Guests', fmtNum(model.guestsDay), `${state.fin.days} days / week`],
+    ['Daily Dine-in Guests', fmtNum(model.guestsDay), `${fmtNum(model.ordersDay)} takeaway orders / day`],
     ['Daily Revenue', fmtEur(model.revDay), `avg check ${fmtEur2(model.avgCheck)}`],
     ['Year 1 Revenue', fmtEur(model.revYear), `${model.annualDays} operating days`],
-    ['Year 1 Profit Estimate', fmtEur(model.profitYearLow), `Conservative ${state.fin.marginFood}% margin`],
+    ['Year 1 Profit Estimate', fmtEur(model.profitYearLow), `${state.fin.marginFood}% dine-in · ${model.takeaway.margin}% takeaway`],
   ];
   return (
     <div style={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
@@ -205,7 +205,7 @@ function Brand({ state, t }: BodyProps) {
           <div style={card(t, { padding: '13px 16px', background: t.accentSoft, borderColor: t.accentSoft, marginTop: 'auto' })}>
             <div style={{ fontSize: 12.5, fontWeight: 700, color: t.ink }}>Philosophy</div>
             <div style={{ fontSize: 11.5, color: t.ink, lineHeight: 1.5, marginTop: 4, opacity: 0.85 }}>
-              Great food and great coffee become a great love. Every cup traces to a named highland farm; every snack carries a family recipe from Java and Sumatra.
+              Great food and great coffee become a great love. Every Cup can be traced to a named highland farm; every snack carries a family recipe from Java and Sumatra.
             </div>
           </div>
         </div>
@@ -341,15 +341,15 @@ function Unit(p: BodyProps) {
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       {p.interactive && p.scenario && <ScenarioBar {...p} />}
       <Eyebrow t={t}>P&L Granularity · Per-Day Turnover</Eyebrow>
-      <Title t={t} sub={`Conservative gross profit estimate at a ${state.fin.marginFood}% margin, before staffing, rent and other operating costs.`}>Daily Unit Economics</Title>
+      <Title t={t} sub={`Gross profit estimate: ${state.fin.marginFood}% dine-in; ${model.takeaway.margin}% takeaway food & coffee. Before staffing, rent and other operating costs.`}>Daily Unit Economics</Title>
       <div style={card(t, { marginTop: 20, overflow: 'hidden' })}>
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead><tr>
-            <th style={th(t)}>Shift</th><th style={th(t)}>Hours</th><th style={th(t, true)}>Guests</th><th style={th(t, true)}>Avg ticket</th>
+            <th style={th(t)}>Shift / channel</th><th style={th(t)}>Hours</th><th style={th(t, true)}>Guests / orders</th><th style={th(t, true)}>Avg ticket</th>
             <th style={th(t, true)}>Daily turnover</th><th style={th(t, true)}>Profit estimate</th><th style={th(t, true)}>Share</th>
           </tr></thead>
           <tbody>
-            {model.shifts.map((s) => (
+            {model.dailyRows.map((s) => (
               <tr key={s.key}>
                 <td style={td(t, false, true)}>{s.label} <span style={{ color: t.muted, fontWeight: 400 }}>· {s.sub}</span></td>
                 <td style={{ ...td(t), fontFamily: MONO, fontSize: 11, color: t.muted }}>{s.hours}</td>
@@ -362,7 +362,7 @@ function Unit(p: BodyProps) {
             ))}
             <tr style={{ background: t.accentSoft }}>
               <td style={{ ...td(t, false, true), fontSize: 14 }}>Daily totals</td><td style={td(t)} />
-              <td style={td(t, true, true)}>{fmtNum(model.guestsDay)}</td>
+              <td style={td(t, true, true)}>{fmtNum(model.transactionsDay)}</td>
               <td style={td(t, true, true)}>{fmtEur2(model.avgCheck)}</td>
               <td style={{ ...td(t, true, true), color: t.accent, fontSize: 15 }}>{fmtEur(model.revDay)}</td>
               <td style={td(t, true, true)}>{fmtEur(model.profitDayLow)}</td>
@@ -380,12 +380,12 @@ function Unit(p: BodyProps) {
           ] },
           { title: 'Year 1 gross revenue', lines: [
             `${fmtEur(model.revYear)} annual gross revenue`,
-            `${fmtNum(model.guestsYear)} guests per year`,
+            `${fmtNum(model.guestsYear)} dine-in guests + ${fmtNum(model.ordersYear)} takeaway orders per year`,
             `${fmtEur(model.revDay)} average daily revenue`,
           ] },
           { title: 'Year 1 profit estimate', lines: [
             `${fmtEur(model.profitYearLow)} estimated annual gross profit`,
-            `${state.fin.marginFood}% conservative gross margin`,
+            `${state.fin.marginFood}% dine-in / ${model.takeaway.margin}% takeaway gross margin`,
             'Before staffing, rent and other operating costs',
           ] },
         ].map(({ title, lines }) => (
@@ -438,7 +438,7 @@ function Monthly(p: BodyProps) {
         </table>
       </div>
       <p style={{ fontSize: 11, color: t.muted, lineHeight: 1.5, marginTop: 12 }}>
-        Conservative gross profit estimate at a {state.fin.marginFood}% margin, before staffing, rent and other operating costs.
+        Gross profit estimate: {state.fin.marginFood}% dine-in / {model.takeaway.margin}% takeaway. Guest counts are dine-in; sales also include {fmtNum(model.ordersDay)} takeaway orders/day. Before staffing, rent and other operating costs.
       </p>
     </div>
   );
@@ -486,7 +486,7 @@ function Case({ state, model, t }: BodyProps) {
   const a = state.intake.audience;
   const head = a === 'Franchise Partners' ? 'A Distinctive Concept. Room to Grow.' : a === 'Municipal Authorities' ? 'A Welcoming Place for the Neighbourhood.' : 'A Place to Remember. An Experience to Share';
   const items = [
-    ['A Clear Revenue Model', `${fmtEur(model.revYear)} projected Year 1 revenue, based on ${fmtNum(model.guestsDay)} guests a day across ${model.annualDays} trading days.`],
+    ['A Clear Revenue Model', `${fmtEur(model.revYear)} projected Year 1 revenue, based on ${fmtNum(model.guestsDay)} dine-in guests and ${fmtNum(model.ordersDay)} takeaway orders a day across ${model.annualDays} trading days.`],
     ['Balanced Trading', `Revenue is spread across breakfast, lunch and dinner; no single shift accounts for more than ${(Math.max(...model.shifts.map((s) => s.share)) * 100).toFixed(0)}% of projected daily sales.`],
     ['From First Coffee to Dinner', 'Morning coffee, Indonesian lunches and relaxed evening meals give guests different reasons to return throughout the day.'],
     ['Transparent Assumptions', `The model uses ${state.fin.marginFood}% food and ${state.fin.marginCoffee}% coffee gross margins, with staffing and rent shown separately in the break-even estimate.`],

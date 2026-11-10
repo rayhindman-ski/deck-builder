@@ -50,6 +50,12 @@ export function migrate(raw: unknown, legacy = false, applyApproved = true): Dec
     };
   };
   const finBase = {
+    takeawayScenarioApplied: f.takeawayScenarioApplied === true,
+    takeaway: isObj(f.takeaway) ? {
+      orders: Math.round(num(f.takeaway.orders, 0, 0, 2000)),
+      check: num(f.takeaway.check, 0, 0, 500),
+      margin: num(f.takeaway.margin, 55, 0, 100),
+    } : undefined,
     planningScenarioApplied: f.planningScenarioApplied === true,
     approvedMarginsApplied: f.approvedMarginsApplied === true,
     rentUtilitiesMonthly: optionalAmount(f.rentUtilitiesMonthly, 100000),
@@ -61,7 +67,7 @@ export function migrate(raw: unknown, legacy = false, applyApproved = true): Dec
   };
   // Loading existing browser state adopts the approved scenario once. Explicit
   // JSON imports instead preserve the financial figures in the chosen file.
-  const fin = applyApproved ? withApprovedScenario(finBase) : { ...finBase, planningScenarioApplied: true, approvedMarginsApplied: true };
+  const fin = applyApproved ? withApprovedScenario(finBase) : { ...finBase, planningScenarioApplied: true, approvedMarginsApplied: true, takeawayScenarioApplied: true };
 
   const urls = Array.isArray(raw.urls)
     ? raw.urls.filter((u: any) => isObj(u) && typeof u.url === 'string').map((u: any, i: number) => ({

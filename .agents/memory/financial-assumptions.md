@@ -18,3 +18,11 @@ Assume rent plus utilities of €3,000/month and 50 guests for each shift.
 The user approved applying the revised scenario: food/drinks spending of €4/€6 morning, €10/€5 lunch and €16/€6 dinner; staffing allowances of €144, €240 and €240 per shift, respectively; five operating days/week. They subsequently set food margin to 45% and coffee margin to 55%.
 
 **How to apply:** These are approved planning estimates, not validated costs or observed sales. Keep rent/utilities separate from insurance, administration and other excluded costs. Changes to guest counts are shared across the deck's revenue forecasts; rent and staffing are used for the slide-five break-even estimate.
+
+## Takeaway
+
+Assume 20 takeaway orders per day, an €18 average ticket, and a 55% gross margin on both takeaway food and coffee.
+
+**Why:** The user supplied these assumptions when adding a Takeaway row after Dinner on slide six.
+
+**How to apply:** Treat takeaway as additional sales, separate from dine-in guests. Use its own margin when combining forecasts, rather than applying the dine-in margin to all revenue. Keep the three dine-in shifts distinct from this all-day sales channel.

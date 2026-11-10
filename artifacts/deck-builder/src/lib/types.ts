@@ -68,6 +68,8 @@ export interface Shift {
 }
 
 export interface Financials {
+  takeawayScenarioApplied?: boolean;
+  takeaway?: { orders: number; check: number; margin: number };
   planningScenarioApplied?: boolean;
   approvedMarginsApplied?: boolean;
   rentUtilitiesMonthly?: number | null;

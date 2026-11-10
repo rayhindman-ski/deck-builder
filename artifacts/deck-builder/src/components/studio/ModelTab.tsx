@@ -44,6 +44,14 @@ export function ModelTab() {
           );
         })}
       </div>
+      <Panel kicker="Additional sales · Separate from dine-in guests" title="Takeaway · Food & Coffee">
+        <div className="grid gap-6 md:grid-cols-3">
+          <NumberSlider testId="takeaway-orders" label="Orders per day" value={f.takeaway?.orders ?? 0} min={0} max={200} onChange={v => patch('fin', { takeaway: { orders: v, check: f.takeaway?.check ?? 18, margin: f.takeaway?.margin ?? 55 } })} />
+          <NumberSlider testId="takeaway-check" label="Average ticket" prefix="€" value={f.takeaway?.check ?? 0} min={0} max={80} step={0.5} onChange={v => patch('fin', { takeaway: { orders: f.takeaway?.orders ?? 0, check: v, margin: f.takeaway?.margin ?? 55 } })} />
+          <NumberSlider testId="takeaway-margin" label="Food & coffee gross margin" suffix="%" value={f.takeaway?.margin ?? 55} min={0} max={100} onChange={v => patch('fin', { takeaway: { orders: f.takeaway?.orders ?? 0, check: f.takeaway?.check ?? 18, margin: v } })} />
+        </div>
+        <p className="mt-4 text-xs text-muted-foreground">{fmtEur(model.takeaway.daily)} daily revenue · {fmtEur(model.takeaway.low)} estimated gross profit, before staffing, rent and other operating costs.</p>
+      </Panel>
       <Panel kicker="Shared assumptions" title="Calendar, margins and growth">
         <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
           <NumberSlider testId="days" label="Operating days per week" value={f.days} min={1} max={7} onChange={(v) => patch('fin', { days: v })} />
@@ -52,7 +60,7 @@ export function ModelTab() {
           <NumberSlider testId="growth" label="Annual growth rate" suffix="%" value={f.growth} min={0} max={50} onChange={(v) => patch('fin', { growth: v })} />
         </div>
         <div className="mt-5 rounded-lg bg-muted/60 p-3 font-mono text-[11px] leading-relaxed text-muted-foreground">
-          R_day = Σ guests × check = {fmtEur2(model.revDay)} · R_year = R_day × ({f.days} × 52) = {fmtEur2(model.revYear)} · Profit low = R × {f.marginFood}% = {fmtEur2(model.profitDayLow)}/day · Profit high = R × {f.marginCoffee}% = {fmtEur2(model.profitDayHigh)}/day · Years 2–3 = R_year × (1 + {f.growth}%)^n
+          R_day = dine-in sales + takeaway orders × ticket = {fmtEur2(model.revDay)} · R_year = R_day × ({f.days} × 52) = {fmtEur2(model.revYear)} · Gross profit estimate = dine-in sales × {f.marginFood}% + takeaway sales × {model.takeaway.margin}% = {fmtEur2(model.profitDayLow)}/day · Years 2–3 = R_year × (1 + {f.growth}%)^n
         </div>
       </Panel>
     </div>

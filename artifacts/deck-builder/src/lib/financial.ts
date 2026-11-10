@@ -17,13 +17,23 @@ export function compute(f: Financials) {
     return { ...s, guests: v.guests, check: v.check, daily };
   });
   const guestsDay = shifts.reduce((a, s) => a + s.guests, 0);
-  const revDay = shifts.reduce((a, s) => a + s.daily, 0);
+  const dineInRevDay = shifts.reduce((a, s) => a + s.daily, 0);
+  const ordersDay = f.takeaway?.orders ?? 0;
+  const takeawayCheck = f.takeaway?.check ?? 0;
+  const takeawayMargin = f.takeaway?.margin ?? 55;
+  const takeawayDaily = ordersDay * takeawayCheck;
+  const takeawayProfit = takeawayDaily * takeawayMargin / 100;
+  const revDay = dineInRevDay + takeawayDaily;
   const annualDays = f.days * 52;
   const revYear = revDay * annualDays;
   const low = f.marginFood / 100;
   const high = f.marginCoffee / 100;
-  const avgCheck = guestsDay ? revDay / guestsDay : 0;
+  const transactionsDay = guestsDay + ordersDay;
+  const avgCheck = transactionsDay ? revDay / transactionsDay : 0;
   const guestsYear = Math.round(guestsDay * annualDays);
+  const ordersYear = Math.round(ordersDay * annualDays);
+  const profitDayLow = dineInRevDay * low + takeawayProfit;
+  const profitDayHigh = dineInRevDay * high + takeawayProfit;
 
   // Calendar months: operating days are the first `days` weekdays Mon..Sun.
   const months = MONTHS.map((name, m) => {
@@ -34,7 +44,7 @@ export function compute(f: Financials) {
       if (wd < f.days) op++;
     }
     const revenue = revDay * op;
-    return { name, short: name.slice(0, 3), calDays: dim, op, guests: Math.round(guestsDay * op), revenue, low: revenue * low, high: revenue * high };
+    return { name, short: name.slice(0, 3), calDays: dim, op, guests: Math.round(guestsDay * op), orders: Math.round(ordersDay * op), revenue, low: profitDayLow * op, high: profitDayHigh * op };
   });
   const monthTotal = months.reduce(
     (a, m) => ({ op: a.op + m.op, guests: a.guests + m.guests, revenue: a.revenue + m.revenue, low: a.low + m.low, high: a.high + m.high }),
@@ -45,21 +55,29 @@ export function compute(f: Financials) {
   const quarters: { year: number; q: number; revenue: number; low: number; high: number }[] = [];
   for (let y = 0; y < 3; y++) {
     for (let q = 0; q < 4; q++) {
-      const base = months.slice(q * 3, q * 3 + 3).reduce((a, m) => a + m.revenue, 0);
-      const revenue = base * Math.pow(1 + g, y);
-      quarters.push({ year: y + 1, q: q + 1, revenue, low: revenue * low, high: revenue * high });
+      const period = months.slice(q * 3, q * 3 + 3);
+      const factor = Math.pow(1 + g, y);
+      const revenue = period.reduce((a, m) => a + m.revenue, 0) * factor;
+      quarters.push({ year: y + 1, q: q + 1, revenue, low: period.reduce((a, m) => a + m.low, 0) * factor, high: period.reduce((a, m) => a + m.high, 0) * factor });
     }
   }
   const years = [0, 1, 2].map((y) => {
     const revenue = revYear * Math.pow(1 + g, y);
-    return { year: y + 1, revenue, low: revenue * low, high: revenue * high, guests: Math.round(guestsYear * Math.pow(1 + g, y)) };
+    return { year: y + 1, revenue, low: profitDayLow * annualDays * Math.pow(1 + g, y), high: profitDayHigh * annualDays * Math.pow(1 + g, y), guests: Math.round(guestsYear * Math.pow(1 + g, y)) };
   });
 
+  const shiftRows = shifts.map((s) => ({ ...s, share: revDay ? s.daily / revDay : 0, annual: s.daily * annualDays, low: s.daily * low, high: s.daily * high }));
+  const takeaway = {
+    key: 'takeaway' as const, label: 'Takeaway', sub: `Food & Coffee · ${takeawayMargin}% margin`, hours: 'All day',
+    guests: ordersDay, check: takeawayCheck, daily: takeawayDaily,
+    share: revDay ? takeawayDaily / revDay : 0, annual: takeawayDaily * annualDays,
+    low: takeawayProfit, high: takeawayProfit, margin: takeawayMargin,
+  };
   return {
-    shifts: shifts.map((s) => ({ ...s, share: revDay ? s.daily / revDay : 0, annual: s.daily * annualDays, low: s.daily * low, high: s.daily * high })),
-    guestsDay, revDay, annualDays, revYear, avgCheck, guestsYear,
-    profitDayLow: revDay * low, profitDayHigh: revDay * high,
-    profitYearLow: revYear * low, profitYearHigh: revYear * high,
+    shifts: shiftRows, takeaway, dailyRows: [...shiftRows, takeaway],
+    guestsDay, ordersDay, transactionsDay, ordersYear, revDay, annualDays, revYear, avgCheck, guestsYear,
+    profitDayLow, profitDayHigh,
+    profitYearLow: profitDayLow * annualDays, profitYearHigh: profitDayHigh * annualDays,
     months, monthTotal, quarters, years,
   };
 }
