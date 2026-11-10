@@ -484,7 +484,7 @@ function Quarterly(p: BodyProps) {
 
 function Case({ state, model, t }: BodyProps) {
   const a = state.intake.audience;
-  const head = a === 'Franchise Partners' ? 'A Distinctive Concept. Room to Grow.' : a === 'Municipal Authorities' ? 'A Welcoming Place for the Neighbourhood.' : 'A Place to Return To. A Business to Grow.';
+  const head = a === 'Franchise Partners' ? 'A Distinctive Concept. Room to Grow.' : a === 'Municipal Authorities' ? 'A Welcoming Place for the Neighbourhood.' : 'A Place to Remember. An Experience to Share';
   const items = [
     ['A Clear Revenue Model', `${fmtEur(model.revYear)} projected Year 1 revenue, based on ${fmtNum(model.guestsDay)} guests a day across ${model.annualDays} trading days.`],
     ['Balanced Trading', `Revenue is spread across breakfast, lunch and dinner; no single shift accounts for more than ${(Math.max(...model.shifts.map((s) => s.share)) * 100).toFixed(0)}% of projected daily sales.`],
