@@ -341,12 +341,12 @@ function Unit(p: BodyProps) {
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       {p.interactive && p.scenario && <ScenarioBar {...p} />}
       <Eyebrow t={t}>P&L Granularity · Per-Day Turnover</Eyebrow>
-      <Title t={t} sub={`Profit shown as a range: ${state.fin.marginFood}% food/kitchen margin as the conservative floor, ${state.fin.marginCoffee}% coffee/retail margin as the ceiling.`}>Daily Unit Economics</Title>
+      <Title t={t} sub={`Conservative gross profit estimate at a ${state.fin.marginFood}% margin, before staffing, rent and other operating costs.`}>Daily Unit Economics</Title>
       <div style={card(t, { marginTop: 20, overflow: 'hidden' })}>
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead><tr>
             <th style={th(t)}>Shift</th><th style={th(t)}>Hours</th><th style={th(t, true)}>Guests</th><th style={th(t, true)}>Avg ticket</th>
-            <th style={th(t, true)}>Daily turnover</th><th style={th(t, true)}>Profit low</th><th style={th(t, true)}>Profit high</th><th style={th(t, true)}>Share</th>
+            <th style={th(t, true)}>Daily turnover</th><th style={th(t, true)}>Profit estimate</th><th style={th(t, true)}>Share</th>
           </tr></thead>
           <tbody>
             {model.shifts.map((s) => (
@@ -357,7 +357,6 @@ function Unit(p: BodyProps) {
                 <td style={td(t, true)}>{fmtEur2(s.check)}</td>
                 <td style={{ ...td(t, true), color: t.accent }}>{fmtEur(s.daily)}</td>
                 <td style={td(t, true)}>{fmtEur(s.low)}</td>
-                <td style={td(t, true)}>{fmtEur(s.high)}</td>
                 <td style={td(t, true)}>{(s.share * 100).toFixed(1)}%</td>
               </tr>
             ))}
@@ -367,7 +366,6 @@ function Unit(p: BodyProps) {
               <td style={td(t, true, true)}>{fmtEur2(model.avgCheck)}</td>
               <td style={{ ...td(t, true, true), color: t.accent, fontSize: 15 }}>{fmtEur(model.revDay)}</td>
               <td style={td(t, true, true)}>{fmtEur(model.profitDayLow)}</td>
-              <td style={td(t, true, true)}>{fmtEur(model.profitDayHigh)}</td>
               <td style={td(t, true, true)}>100%</td>
             </tr>
           </tbody>
@@ -377,7 +375,7 @@ function Unit(p: BodyProps) {
         {[
           ['Annualisation basis', `${state.fin.days} days × 52 weeks = ${model.annualDays} operating days`],
           ['Year 1 gross revenue', `${fmtEur(model.revYear)} from ${fmtNum(model.guestsYear)} guests`],
-          ['Year 1 profit range', `${fmtEur(model.profitYearLow)} – ${fmtEur(model.profitYearHigh)}`],
+          ['Year 1 profit estimate', fmtEur(model.profitYearLow)],
         ].map(([k, v]) => (
           <div key={k} style={card(t, { padding: '12px 14px' })}>
             <div style={{ fontFamily: MONO, fontSize: 9.5, letterSpacing: '0.1em', textTransform: 'uppercase', color: t.accent }}>{k}</div>
@@ -471,25 +469,28 @@ function Quarterly(p: BodyProps) {
 
 function Case({ state, model, t }: BodyProps) {
   const a = state.intake.audience;
-  const head = a === 'Franchise Partners' ? 'Why This Format Travels' : a === 'Municipal Authorities' ? 'Why This Belongs On Our Street' : 'Why Rayana Is a Bankable Tenant';
+  const head = a === 'Franchise Partners' ? 'A Distinctive Concept. Room to Grow.' : a === 'Municipal Authorities' ? 'A Welcoming Place for the Neighbourhood.' : 'A Place to Return To. A Business to Grow.';
   const items = [
-    ['Den Haag commercial viability', `${fmtEur(model.revYear)} Year 1 gross on ${model.annualDays} trading days supports a high-street rent with headroom.`],
-    ['Foot-traffic resilience', `${fmtNum(model.guestsDay)} guests a day spread across three shifts; no single daypart exceeds ${(Math.max(...model.shifts.map((s) => s.share)) * 100).toFixed(0)}% of revenue.`],
-    ['Multi-daypart capture', 'Commuter coffee, office lunch and evening rijsttafel turn one lease into three businesses.'],
-    ['Healthy margin floor', `Even at the ${state.fin.marginFood}% kitchen margin the unit earns ${fmtEur(model.profitYearLow)} in Year 1.`],
-    ['Farm-direct supply moat', 'Sumatra and Java smallholder relationships secure lots competitors cannot simply order.'],
-    ['Compounding upside', `At ${state.fin.growth}% annual growth, Year 3 reaches ${fmtEur(model.years[2].revenue)} gross revenue.`],
+    ['A Clear Revenue Model', `${fmtEur(model.revYear)} projected Year 1 revenue, based on ${fmtNum(model.guestsDay)} guests a day across ${model.annualDays} trading days.`],
+    ['Balanced Trading', `Revenue is spread across breakfast, lunch and dinner; no single shift accounts for more than ${(Math.max(...model.shifts.map((s) => s.share)) * 100).toFixed(0)}% of projected daily sales.`],
+    ['From First Coffee to Dinner', 'Morning coffee, Indonesian lunches and relaxed evening meals give guests different reasons to return throughout the day.'],
+    ['Transparent Assumptions', `The model uses ${state.fin.marginFood}% food and ${state.fin.marginCoffee}% coffee gross margins, with staffing and rent shown separately in the break-even estimate.`],
+    ['Coffee with a Direct Connection', 'Farm-direct Indonesian coffee brings a clear origin story and a distinctive alternative to the everyday café offering.'],
+    ['Room to Grow', `The illustrative ${state.fin.growth}% annual growth scenario reaches ${fmtEur(model.years[2].revenue)} revenue in Year 3—not a guaranteed outcome.`],
+    ['Coffee Wisdom', 'Cuppings, barista skills and latte art workshops turn coffee expertise into hands-on, bookable experiences.'],
+    ['Events and Catering', 'Indonesian catering for offices, private parties and special events extends the business beyond the bistro’s tables.'],
+    ['Take Rayana Home', 'Retail coffee beans and brewing gear let guests enjoy Rayana at home, adding sales beyond food and drinks served on-site.'],
   ];
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-      <Eyebrow t={t}>The Case · {a}</Eyebrow>
-      <Title t={t}>{head}</Title>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, marginTop: 18 }}>
+      <Eyebrow t={t}>Indonesian Hospitality · Commercial Potential</Eyebrow>
+      <Title t={t} sub="Indonesian food, farm-direct coffee and shared experiences—with more than one reason to visit.">{head}</Title>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gridTemplateRows: 'repeat(3, minmax(0, 1fr))', gap: 12, marginTop: 18, marginBottom: 16, flex: 1, minHeight: 0 }}>
         {items.map(([k, v], i) => (
-          <div key={k} style={card(t, { padding: '14px 16px', minHeight: 112 })}>
+          <div key={k} style={card(t, { padding: '12px 14px' })}>
             <div style={{ fontFamily: MONO, fontSize: 11, color: t.accent, fontWeight: 700 }}>{String(i + 1).padStart(2, '0')}</div>
             <div style={{ fontSize: 15, fontWeight: 700, color: t.ink, marginTop: 4 }}>{k}</div>
-            <div style={{ fontSize: 12, color: t.muted, marginTop: 5, lineHeight: 1.5 }}>{v}</div>
+            <div style={{ fontSize: 11.5, color: t.muted, marginTop: 5, lineHeight: 1.45 }}>{v}</div>
           </div>
         ))}
       </div>
