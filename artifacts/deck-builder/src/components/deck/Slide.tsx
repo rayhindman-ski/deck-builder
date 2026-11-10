@@ -5,7 +5,7 @@ import { fmtEur, fmtEur2, fmtNum, PROJECTION_YEAR } from '@/lib/financial';
 import { coverBgOf, FONTS, isDark, LOGO_SIZES, THEMES, type Theme } from '@/lib/themes';
 import { BISTRO_DESCRIPTION, BISTRO_TAGLINE, COFFEE_DESCRIPTION, bistroSource, defaultAssets, isBistroSource, SECTION_TITLES } from '@/lib/defaults';
 import { Emblem, resolveLogo } from './Emblem';
-import { ShiftInsights } from './ShiftInsights';
+import { ShiftInsights, TakeawayInsights } from './ShiftInsights';
 import { SLIDE_COUNT, SLIDE_H, SLIDE_W } from './constants';
 
 export interface SlideProps {
@@ -295,20 +295,24 @@ function Shifts(p: BodyProps) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       {p.interactive && p.scenario && <ScenarioBar {...p} />}
-      <Eyebrow t={t}>Three Dayparts · One Room</Eyebrow>
-      <Title t={t} sub="Each shift carries its own guest profile and ticket. Revenue does not depend on a single rush.">Shift Revenue Overview</Title>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, marginTop: 16, flex: 1, minHeight: 0, paddingBottom: 10 }}>
-        {model.shifts.map((s, i) => (
-          <div key={s.key} style={card(t, { padding: '16px 22px', display: 'flex', flexDirection: 'column', borderTop: `4px solid ${i === 2 ? t.second : t.accent}` })}>
-            <div style={{ fontFamily: MONO, fontSize: 10.5, color: t.muted }}>{s.hours}</div>
-            <div style={{ fontSize: 26, fontWeight: 700, color: t.ink, marginTop: 4 }}>{s.label}</div>
-            <div style={{ fontSize: 13, color: t.muted }}>{s.sub}</div>
+      <Eyebrow t={t}>Three Shifts · All-Day Orders</Eyebrow>
+      <Title t={t} sub="Morning, lunch and dinner, complemented by takeaway orders and catering.">Shift Revenue Overview</Title>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: 14, marginTop: 16, flex: 1, minHeight: 0, paddingBottom: 10 }}>
+        {model.dailyRows.map((s, i) => (
+          <div key={s.key} data-testid={`shift-card-${s.key}`} style={card(t, { padding: '12px 14px', display: 'flex', flexDirection: 'column', borderTop: `4px solid ${i === 2 ? t.second : t.accent}` })}>
+            <div style={{ minHeight: 96 }}>
+              <div style={{ fontFamily: MONO, fontSize: 10.5, color: t.muted }}>{s.hours}</div>
+              <div style={{ fontSize: s.key === 'takeaway' ? 22 : 26, lineHeight: 1.2, fontWeight: 700, color: t.ink, marginTop: 4 }}>{s.key === 'takeaway' ? 'Takeaway Orders / Catering' : s.label}</div>
+              <div style={{ fontSize: 13, color: t.muted, marginTop: 4 }}>{s.sub}</div>
+            </div>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginTop: 16 }}>
-              <Stat t={t} k="Guests / day" v={fmtNum(s.guests)} />
+              <Stat t={t} k={s.key === 'takeaway' ? 'Orders / day' : 'Guests / day'} v={fmtNum(s.guests)} />
               <Stat t={t} k="Average check" v={fmtEur2(s.check)} />
             </div>
-            <ShiftInsights shift={state.fin[s.key]} shiftKey={s.key} financials={state.fin} theme={t} />
-            <div style={{ marginTop: 'auto', paddingTop: 16, borderTop: `1px solid ${t.line}` }}>
+            {s.key === 'takeaway'
+              ? <TakeawayInsights takeaway={s} theme={t} />
+              : <ShiftInsights shift={state.fin[s.key]} shiftKey={s.key} financials={state.fin} theme={t} />}
+            <div style={{ marginTop: 'auto', paddingTop: 12, borderTop: `1px solid ${t.line}` }}>
               <Stat t={t} k="Daily turnover" v={fmtEur(s.daily)} big />
               <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 10, fontSize: 12, color: t.muted }}>
                 <span>Annual revenue</span>

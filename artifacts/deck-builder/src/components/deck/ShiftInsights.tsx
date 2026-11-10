@@ -1,10 +1,29 @@
 import type { Financials, Shift } from '@/lib/types';
 import type { Theme } from '@/lib/themes';
-import { fmtEur2, fmtNum } from '@/lib/financial';
+import { fmtEur, fmtEur2, fmtNum, type Model } from '@/lib/financial';
 import { rentUtilitiesForShift, shiftEconomics } from '@/lib/shift-economics';
 import type { ShiftKey } from '@/lib/financial';
 
 const MONO = "'JetBrains Mono', SFMono-Regular, monospace";
+
+export function TakeawayInsights({ takeaway, theme: t }: { takeaway: Model['takeaway']; theme: Theme }) {
+  const label = { fontFamily: MONO, fontSize: 9.5, letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: t.muted };
+  return (
+    <div style={{ marginTop: 12, marginBottom: 10 }}>
+      <div style={{ borderTop: `1px solid ${t.line}`, paddingTop: 8 }}>
+        <div style={label}>Food &amp; Coffee Margin</div>
+        <div style={{ fontSize: 19, fontWeight: 700, color: t.ink, marginTop: 5 }}>{takeaway.margin}%</div>
+      </div>
+      <div style={{ borderTop: `1px solid ${t.line}`, marginTop: 9, paddingTop: 8 }}>
+        <div style={label}>Daily Gross Profit Estimate</div>
+        <div style={{ fontSize: 19, fontWeight: 700, color: t.ink, marginTop: 5 }}>{fmtEur(takeaway.low)}</div>
+        <div style={{ fontSize: 10.5, lineHeight: 1.45, color: t.muted, marginTop: 4 }}>
+          Before staffing &amp; overhead. Catering revenue not yet forecast.
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export function ShiftInsights({ shift, shiftKey, financials, theme: t }: {
   shift: Shift; shiftKey: ShiftKey; financials: Financials; theme: Theme;
