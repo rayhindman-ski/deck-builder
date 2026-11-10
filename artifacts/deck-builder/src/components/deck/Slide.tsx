@@ -234,7 +234,7 @@ function Pillars({ state, t, model }: BodyProps) {
     ['Coffee Wisdom', null, 'Cupping sessions, barista workshops and latte art workshops for curious coffee lovers.', 'Sessions & workshops'],
     ['Snacks & Desserts', mf, 'Spekkoek, risoles, lemper and pastel goreng, baked and folded daily for the counter.', 'Lunch & afternoon'],
     ['Bistro Meals', mf, 'Slow-simmered rendang, mie ayam jamur, gado-gado and a seasonal rijsttafel for the evening room.', 'Midday & evening'],
-    ['Indonesian Catering', null, 'Indonesian food for offices, private parties and special events.', 'Office · Private party · Special events'],
+    ['Events and Catering', null, 'Bring people together over unforgettable Indonesian flavours.', 'Office · Private party · Special events'],
   ] as const;
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
