@@ -226,7 +226,7 @@ function Brand({ state, t }: BodyProps) {
   );
 }
 
-function Pillars({ state, t, model }: BodyProps) {
+function Pillars({ state, t }: BodyProps) {
   const { marginCoffee: mc, marginFood: mf } = state.fin;
   const pillars = [
     ['Specialty Coffee Bar', mc, 'Single-origin pour-overs, espresso from Gayo and Java Malabar, iced pandan lattes and oat-milk craft drinks.', 'Morning & all-day'],
@@ -254,10 +254,6 @@ function Pillars({ state, t, model }: BodyProps) {
             <div style={{ marginTop: 'auto', fontFamily: MONO, fontSize: 10.5, lineHeight: 1.5, color: t.muted, borderTop: `1px dashed ${t.line}`, paddingTop: 8 }}>{when}</div>
           </div>
         ))}
-      </div>
-      <div style={{ marginTop: 12, marginBottom: 16, ...card(t, { padding: '9px 16px', background: t.accentSoft, borderColor: t.accentSoft }), display: 'flex', justifyContent: 'space-between', fontFamily: MONO, fontSize: 10.5, color: t.ink }}>
-        <span>Blended margin spread: {mf}% – {mc}%</span>
-        <span>Average basket {fmtEur2(model.avgCheck)}</span>
       </div>
     </div>
   );
