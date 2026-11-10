@@ -36,8 +36,8 @@ export const bistroSource = (): UrlEntry => ({
 });
 
 export const defaultUrls = (): UrlEntry[] => [
-  { id: 'u1', url: 'https://www.rayanacoffees.com', role: 'Primary Brand', status: null, title: '', summary: '', notes: 'Farm-direct Indonesian specialty coffee; Sumatra & Java smallholders.', checkedAt: null, error: null },
-  { id: 'u2', url: 'https://www.rayanaroast.com', role: 'Specialty Roastery', status: null, title: '', summary: '', notes: 'Small-batch roasting, wholesale supply and barista training.', checkedAt: null, error: null },
+  { id: 'u1', url: 'https://www.rayanacoffees.com', role: 'Primary Brand', status: null, title: 'Rayana Indonesian Coffees', summary: '', notes: 'Farm-direct Indonesian specialty coffee; Sumatra & Java smallholders.', checkedAt: null, error: null },
+  { id: 'u2', url: 'https://www.rayanaroast.com', role: 'Specialty Roastery', status: null, title: 'Rayana Roast', summary: '', notes: 'Small-batch roasting, wholesale supply and barista training.', checkedAt: null, error: null },
   bistroSource(),
 ];
 

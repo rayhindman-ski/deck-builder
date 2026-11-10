@@ -177,6 +177,12 @@ function Brand({ state, t }: BodyProps) {
   const bistro = state.urls.find((u) => isBistroSource(u.url)) ?? bistroSource();
   const brands = [...state.urls.filter((u) => !isBistroSource(u.url)).slice(0, 2), bistro];
   const domain = (u: string) => u.replace(/^https?:\/\//, '').replace(/\/$/, '');
+  const brandTitle = (url: string, fallback: string) => {
+    const host = domain(url).replace(/^www\./i, '').split(/[/?#]/)[0]?.toLowerCase();
+    if (host === 'rayanacoffees.com') return 'Rayana Indonesian Coffees';
+    if (host === 'rayanaroast.com') return 'Rayana Roast';
+    return fallback || domain(url);
+  };
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       <Eyebrow t={t}>Origin · Heritage · Ecosystem</Eyebrow>
@@ -188,7 +194,7 @@ function Brand({ state, t }: BodyProps) {
           {brands.map((u) => (
             <div key={u.id} style={card(t, { padding: '13px 16px' })}>
               <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8 }}>
-                <span style={{ fontSize: 15, fontWeight: 700, color: t.ink }}>{u.title || domain(u.url)}</span>
+                <span style={{ fontSize: 15, fontWeight: 700, color: t.ink }}>{brandTitle(u.url, u.title)}</span>
                 <span style={tag(t)}>{isBistroSource(u.url) ? 'Coming soon' : u.role}</span>
               </div>
               <div style={{ fontFamily: MONO, fontSize: 11, color: t.accent, marginTop: 3 }}>{domain(u.url)}</div>
