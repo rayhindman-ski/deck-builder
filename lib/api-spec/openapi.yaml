@@ -11,6 +11,69 @@ tags:
   - name: health
     description: Health operations
 paths:
+  /deck-exports:
+    get:
+      operationId: listDeckExports
+      summary: List versioned PDF outputs in doc/decks
+      responses:
+        "200":
+          description: Saved outputs, newest version first
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DeckExport"
+    post:
+      operationId: saveDeckExport
+      summary: Save PDF using the highest existing version plus one
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeckExportInput"
+      responses:
+        "201":
+          description: Version saved without overwriting any earlier output
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeckExport"
+  /deck-exports/{filename}:
+    get:
+      operationId: downloadDeckExport
+      parameters:
+        - in: path
+          name: filename
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: PDF output
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+  /brand-sources/inspect:
+    post:
+      operationId: inspectBrandSource
+      summary: Read public Rayana brand website context
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BrandSourceInput"
+      responses:
+        "200":
+          description: Source status and extracted summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BrandSourceResult"
   /healthz:
     get:
       operationId: healthCheck
@@ -26,6 +89,37 @@ paths:
                 $ref: "#/components/schemas/HealthStatus"
 components:
   schemas:
+    DeckExport:
+      type: object
+      required: [filename, version, path, downloadUrl, createdAt, bytes]
+      properties:
+        filename: { type: string }
+        version: { type: integer }
+        path: { type: string }
+        downloadUrl: { type: string }
+        createdAt: { type: string }
+        bytes: { type: integer }
+    DeckExportInput:
+      type: object
+      required: [pdfBase64]
+      properties:
+        pdfBase64:
+          type: string
+          minLength: 8
+          maxLength: 45000000
+    BrandSourceInput:
+      type: object
+      required: [url]
+      properties:
+        url: { type: string, maxLength: 2000 }
+    BrandSourceResult:
+      type: object
+      required: [url, status, title, summary]
+      properties:
+        url: { type: string }
+        status: { type: integer }
+        title: { type: string }
+        summary: { type: string }
     HealthStatus:
       type: object
       properties:

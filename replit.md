@@ -1,10 +1,11 @@
-# [Project name]
+# Deck Builder
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+A Rayana's Bistro presentation studio for editing brand styling, planning hospitality revenue, and exporting versioned A4 landscape investor decks.
 
 ## Run & Operate
 
-- `pnpm --filter @workspace/api-server run dev` — run the API server (port 5000)
+- `pnpm --filter @workspace/api-server run dev` — run the API server (use its managed workflow)
+- `pnpm --filter @workspace/deck-builder run dev` — frontend (use its managed workflow for preview)
 - `pnpm run typecheck` — full typecheck across all packages
 - `pnpm run build` — typecheck + build all packages
 - `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
@@ -22,23 +23,33 @@ _Replace the heading above with the project's name, and this line with one sente
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- `doc/spec/deck-builder.md` — user-provided product specification
+- `doc/ref/gemini-example-deck.pdf` — original reference presentation
+- `artifacts/deck-builder/` — web studio and client-side deck rendering
+- `lib/api-spec/openapi.yaml` — typed API contracts
+- `artifacts/api-server/src/routes/deck-exports.ts` — versioned PDF save/download endpoints
+- `doc/decks/` — generated PDF history (excluded from Git and publishing bundles)
 
 ## Architecture decisions
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+- Local PDF downloads and native print requests also archive a project PDF so every export can receive a version from one shared history. Browsers cannot inspect a user's Downloads directory.
+- PDF writes use atomic exclusive publication: concurrent saves must never overwrite earlier versions.
+- Project-folder PDF output is intentional, as explicitly requested. It is a workspace feature, not a promise of persistent shared storage in a published app.
+- Source inspection reads the two known Rayana brand domains only, preventing arbitrary server-side URL access.
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+Six studio tabs cover styling, website context, browser-local assets, pitch intake, financial modeling, and a nine-slide deck preview. Export supports A4 landscape printing, local downloads, and project PDF history.
 
 ## User preferences
 
-_Populate as you build — explicit user instructions worth remembering across sessions._
+Conversation language: English. Use the supplied specification and reference deck. Every generated PDF save must find the highest existing output version and increment it.
 
 ## Gotchas
 
-_Populate as you build — sharp edges, "always run X before Y" rules._
+- Run OpenAPI code generation after editing the API specification.
+- Native print can suggest a versioned filename but cannot control the final local destination or detect whether the print dialog was cancelled.
+- Keep generated PDF history out of Git and deployment bundles; download important outputs to retain an independent copy.
 
 ## Pointers
 

@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Deck Builder"
+description = "Rayana presentation studio with brand styling, nine A4 landscape slides, hospitality financial modeling, and versioned PDF export."
+version = "1.0.0"
+id = "artifacts/deck-builder"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 23393
+
+[services.development]
+run = "pnpm --filter @workspace/deck-builder run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/deck-builder", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/deck-builder/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "23393"
+BASE_PATH = "/"

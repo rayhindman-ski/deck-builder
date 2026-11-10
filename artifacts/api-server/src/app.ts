@@ -3,6 +3,7 @@ import cors from "cors";
 import pinoHttp from "pino-http";
 import router from "./routes";
 import { logger } from "./lib/logger";
+import deckExportsRouter from "./routes/deck-exports";
 
 const app: Express = express();
 
@@ -26,6 +27,8 @@ app.use(
   }),
 );
 app.use(cors());
+// Mount before the default small JSON parser: PDF export bodies may be larger.
+app.use("/api", deckExportsRouter);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
