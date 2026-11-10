@@ -44,3 +44,9 @@ Use “Indonesian Bites. Farm Direct Specialty Coffee” in place of “Den Haag
 **Why:** The user chose this wording after discussing the warm, intimate launching site and its equal focus on food and drinks.
 
 **How to apply:** Keep Rayana's Bistro as the main subject on page two, with the chosen slogan beneath it. “Farm Direct” is allowed in this slogan; its removal applies to the logo lettering only.
+
+The third brand website is `www.rayanabisto.com`, marked “Coming soon.”
+
+**Why:** The user supplied this exact domain spelling and launch status.
+
+**How to apply:** Preserve `rayanabisto.com` as given; do not silently change it to `rayanabistro.com` or imply the website is already live.

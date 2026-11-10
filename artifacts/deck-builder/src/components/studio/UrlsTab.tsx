@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Globe, Loader2, Plus, RefreshCw, Trash2, ArrowDownToLine, Info } from 'lucide-react';
 import { useInspectBrandSource } from '@workspace/api-client-react';
 import { useStore } from '@/lib/store';
-import { uid } from '@/lib/defaults';
+import { isBistroSource, uid } from '@/lib/defaults';
 import { errorMessage } from '@/lib/export-pdf';
 import type { UrlEntry, UrlRole } from '@/lib/types';
 import { Input } from '@/components/ui/input';
@@ -14,6 +14,7 @@ import { Panel } from './parts';
 const ROLES: UrlRole[] = ['Primary Brand', 'Specialty Roastery', 'Wholesale', 'Menu & Catering'];
 
 function StatusPill({ u, loading }: { u: UrlEntry; loading: boolean }) {
+  if (isBistroSource(u.url)) return <span className="rounded-full bg-primary/10 px-2 py-0.5 font-mono text-[10.5px] text-primary">Coming soon</span>;
   if (loading) return <span className="inline-flex items-center gap-1 rounded-full bg-muted px-2 py-0.5 font-mono text-[10.5px]"><Loader2 className="h-3 w-3 animate-spin" />checking</span>;
   if (u.error) return <span data-testid={`status-url-${u.id}`} className="rounded-full bg-destructive/10 px-2 py-0.5 font-mono text-[10.5px] text-destructive">failed</span>;
   if (u.status == null) return <span data-testid={`status-url-${u.id}`} className="rounded-full bg-muted px-2 py-0.5 font-mono text-[10.5px] text-muted-foreground">not checked</span>;
@@ -72,7 +73,7 @@ export function UrlsTab() {
                   <SelectContent>{ROLES.map((r) => <SelectItem key={r} value={r}>{r}</SelectItem>)}</SelectContent>
                 </Select>
                 <StatusPill u={u} loading={!!busy[u.id]} />
-                <Button data-testid={`button-check-url-${u.id}`} size="sm" variant="outline" className="h-8" onClick={() => check(u)} disabled={!!busy[u.id]}>
+                <Button data-testid={`button-check-url-${u.id}`} size="sm" variant="outline" className="h-8" onClick={() => check(u)} disabled={!!busy[u.id] || isBistroSource(u.url)}>
                   <RefreshCw className="mr-1 h-3.5 w-3.5" />Inspect
                 </Button>
                 <Button data-testid={`button-delete-url-${u.id}`} size="icon" variant="ghost" className="h-8 w-8" onClick={() => remove(u.id)} aria-label="Remove source"><Trash2 className="h-4 w-4" /></Button>

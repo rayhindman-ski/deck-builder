@@ -1,4 +1,4 @@
-import { BISTRO_TAGLINE, createDefaultState, defaultAssets, SECTION_TITLES } from './defaults';
+import { BISTRO_TAGLINE, bistroSource, isBistroSource, createDefaultState, defaultAssets, SECTION_TITLES } from './defaults';
 import type { DeckState, FontId, PersistTier } from './types';
 
 export const STORAGE_KEY = 'deckBuilder.state.v4';
@@ -54,6 +54,7 @@ export function migrate(raw: unknown, legacy = false): DeckState {
         title: String(u.title ?? ''), summary: String(u.summary ?? ''), notes: String(u.notes ?? ''), checkedAt: u.checkedAt ?? null, error: u.error ?? null,
       }))
     : d.urls;
+  if (!urls.some((u) => isBistroSource(u.url))) urls.push(bistroSource());
 
   let assets = Array.isArray(raw.assets) ? raw.assets.filter((a: any) => isObj(a) && typeof a.src === 'string') : d.assets;
   const builtins = defaultAssets();

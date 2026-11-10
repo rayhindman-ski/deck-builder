@@ -24,11 +24,21 @@ export const defaultAssets = (): Asset[] => [
   { id: 'builtin-pourover', name: 'Specialty Pour-Over Coffee', mime: 'image/jpeg', bytes: 0, src: pub('/samples/pour-over.jpg'), tag: 'Visual Asset', builtin: true },
   { id: 'builtin-snacks', name: 'Indonesian Snack Sampler', mime: 'image/jpeg', bytes: 0, src: pub('/samples/snack-sampler.jpg'), tag: 'Visual Asset', builtin: true },
   { id: 'builtin-founders', name: 'Ray & Legiyana, Founders', mime: 'image/jpeg', bytes: 0, src: pub('/samples/founders.jpg'), tag: 'Visual Asset', builtin: true },
+  { id: 'builtin-meals', name: 'Bistro Meals', mime: 'image/jpeg', bytes: 0, src: pub('/samples/bistro-meals.jpg'), tag: 'Visual Asset', builtin: true },
 ];
+
+export const isBistroSource = (url: string) => /^https?:\/\/(?:www\.)?rayanabisto\.com(?:[/?#]|$)/i.test(url);
+
+export const bistroSource = (): UrlEntry => ({
+  id: 'u3-bistro', url: 'https://www.rayanabisto.com', role: 'Menu & Catering',
+  status: null, title: "Rayana's Bistro", summary: '', notes: 'Coming soon',
+  checkedAt: null, error: null,
+});
 
 export const defaultUrls = (): UrlEntry[] => [
   { id: 'u1', url: 'https://www.rayanacoffees.com', role: 'Primary Brand', status: null, title: '', summary: '', notes: 'Farm-direct Indonesian specialty coffee; Sumatra & Java smallholders.', checkedAt: null, error: null },
   { id: 'u2', url: 'https://www.rayanaroast.com', role: 'Specialty Roastery', status: null, title: '', summary: '', notes: 'Small-batch roasting, wholesale supply and barista training.', checkedAt: null, error: null },
+  bistroSource(),
 ];
 
 export const BISTRO_TAGLINE = 'Indonesian Bites. Farm Direct Specialty Coffee';

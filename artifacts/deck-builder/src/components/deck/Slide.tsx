@@ -3,7 +3,7 @@ import type { DeckState, Financials } from '@/lib/types';
 import type { Model } from '@/lib/financial';
 import { fmtEur, fmtEur2, fmtK, fmtNum, PROJECTION_YEAR } from '@/lib/financial';
 import { coverBgOf, FONTS, isDark, LOGO_SIZES, THEMES, type Theme } from '@/lib/themes';
-import { BISTRO_TAGLINE, SECTION_TITLES } from '@/lib/defaults';
+import { BISTRO_TAGLINE, bistroSource, defaultAssets, isBistroSource, SECTION_TITLES } from '@/lib/defaults';
 import { Emblem, resolveLogo } from './Emblem';
 import { SLIDE_COUNT, SLIDE_H, SLIDE_W } from './constants';
 
@@ -163,7 +163,19 @@ function Toc({ state, t, onJump, interactive }: BodyProps) {
 }
 
 function Brand({ state, t }: BodyProps) {
-  const visuals = state.assets.filter((a) => a.tag === 'Visual Asset' && a.mime.startsWith('image/')).slice(0, 3);
+  const builtins = defaultAssets();
+  const slots = [
+    ['builtin-founders', 'Ray & Yana'],
+    ['builtin-snacks', 'Indonesian Snacks'],
+    ['builtin-pourover', 'Pour-Over Coffee'],
+    ['builtin-meals', 'Bistro Meals'],
+  ];
+  const visuals = slots.map(([id, label]) => ({
+    ...(state.assets.find((a) => a.id === id) ?? builtins.find((a) => a.id === id)!),
+    label,
+  }));
+  const bistro = state.urls.find((u) => isBistroSource(u.url)) ?? bistroSource();
+  const brands = [...state.urls.filter((u) => !isBistroSource(u.url)).slice(0, 2), bistro];
   const domain = (u: string) => u.replace(/^https?:\/\//, '').replace(/\/$/, '');
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
@@ -173,11 +185,11 @@ function Brand({ state, t }: BodyProps) {
       </Title>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.15fr', gap: 18, marginTop: 20, flex: 1, minHeight: 0, paddingBottom: 18 }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-          {state.urls.slice(0, 3).map((u) => (
+          {brands.map((u) => (
             <div key={u.id} style={card(t, { padding: '13px 16px' })}>
               <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8 }}>
                 <span style={{ fontSize: 15, fontWeight: 700, color: t.ink }}>{u.title || domain(u.url)}</span>
-                <span style={tag(t)}>{u.role}</span>
+                <span style={tag(t)}>{isBistroSource(u.url) ? 'Coming soon' : u.role}</span>
               </div>
               <div style={{ fontFamily: MONO, fontSize: 11, color: t.accent, marginTop: 3 }}>{domain(u.url)}</div>
               <div style={{ fontSize: 11.5, color: t.muted, marginTop: 6, lineHeight: 1.45 }}>{(u.notes || u.summary).slice(0, 150)}</div>
@@ -190,11 +202,11 @@ function Brand({ state, t }: BodyProps) {
             </div>
           </div>
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: '1.3fr 1fr', gridTemplateRows: '1fr 1fr', gap: 10 }}>
-          {visuals.map((v, i) => (
-            <div key={v.id} style={{ position: 'relative', borderRadius: 10, overflow: 'hidden', gridRow: i === 0 ? 'span 2' : undefined, background: t.line }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gridTemplateRows: 'minmax(0, 1fr) minmax(0, 1fr)', gap: 10, minHeight: 0 }}>
+          {visuals.map((v) => (
+            <div key={v.id} style={{ position: 'relative', borderRadius: 10, overflow: 'hidden', minHeight: 0, background: t.line }}>
               <img src={v.src} alt={v.name} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
-              <div style={{ position: 'absolute', left: 8, bottom: 8, ...tag(t, true), fontSize: 9 }}>{v.name}</div>
+              <div style={{ position: 'absolute', left: 8, bottom: 8, ...tag(t, true), fontSize: 9 }}>{v.label}</div>
             </div>
           ))}
           {visuals.length === 0 && (
