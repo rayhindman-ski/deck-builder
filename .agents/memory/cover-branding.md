@@ -38,3 +38,9 @@ When masking text on the transparent logo, intersect the text mask with the orig
 **Why:** Grayscale thresholding alone treats transparent pixels as dark, which can paint opaque rectangular patches over the gaps between rings.
 
 **How to apply:** Preserve the original transparent pixels during raster text retouching.
+
+Use “Indonesian Bites. Farm Direct Specialty Coffee” in place of “Den Haag Flagship” as the presentation slogan.
+
+**Why:** The user chose this wording after discussing the warm, intimate launching site and its equal focus on food and drinks.
+
+**How to apply:** Keep Rayana's Bistro as the main subject on page two, with the chosen slogan beneath it. “Farm Direct” is allowed in this slogan; its removal applies to the logo lettering only.

@@ -31,12 +31,14 @@ export const defaultUrls = (): UrlEntry[] => [
   { id: 'u2', url: 'https://www.rayanaroast.com', role: 'Specialty Roastery', status: null, title: '', summary: '', notes: 'Small-batch roasting, wholesale supply and barista training.', checkedAt: null, error: null },
 ];
 
+export const BISTRO_TAGLINE = 'Indonesian Bites. Farm Direct Specialty Coffee';
+
 export const PRESETS: { id: string; label: string; intake: Intake }[] = [
   {
     id: 'den-haag',
-    label: 'Den Haag Flagship',
+    label: 'Bistro Launch',
     intake: {
-      title: "Rayana's Bistro — Den Haag Flagship",
+      title: `Rayana's Bistro — ${BISTRO_TAGLINE}`,
       subtitle: 'Indonesian hospitality, specialty coffee',
       audience: 'Investors & Commercial Landlords',
       prompt:
@@ -81,7 +83,7 @@ export const createDefaultState = (): DeckState => ({
     showMiniLogo: true,
     showSection: true,
     numbering: 'slide-x-of-y',
-    footerText: 'Den Haag Flagship · Specialty Roastery Hybrid',
+    footerText: BISTRO_TAGLINE,
   },
   urls: defaultUrls(),
   assets: defaultAssets(),

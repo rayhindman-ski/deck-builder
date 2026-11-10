@@ -3,7 +3,7 @@ import type { DeckState, Financials } from '@/lib/types';
 import type { Model } from '@/lib/financial';
 import { fmtEur, fmtEur2, fmtK, fmtNum, PROJECTION_YEAR } from '@/lib/financial';
 import { coverBgOf, FONTS, isDark, LOGO_SIZES, THEMES, type Theme } from '@/lib/themes';
-import { SECTION_TITLES } from '@/lib/defaults';
+import { BISTRO_TAGLINE, SECTION_TITLES } from '@/lib/defaults';
 import { Emblem, resolveLogo } from './Emblem';
 import { SLIDE_COUNT, SLIDE_H, SLIDE_W } from './constants';
 
@@ -135,8 +135,7 @@ function Toc({ state, t, onJump, interactive }: BodyProps) {
     <div style={{ display: 'grid', gridTemplateColumns: '300px 1fr', gap: 56, height: '100%' }}>
       <div style={{ paddingTop: 20 }}>
         <Eyebrow t={t}>Contents</Eyebrow>
-        <Title t={t}>{state.intake.title}</Title>
-        <p style={{ fontSize: 13, color: t.muted, lineHeight: 1.55, marginTop: 18 }}>Prepared for {state.intake.audience.toLowerCase()}. Seven chapters from brand origin to the commercial case.</p>
+        <Title t={t} sub={BISTRO_TAGLINE}>{state.style.brandTitle}</Title>
         <div style={{ marginTop: 26, height: 3, width: 64, background: t.accent, borderRadius: 2 }} />
       </div>
       <ol style={{ listStyle: 'none', margin: 0, padding: '14px 0 0' }}>

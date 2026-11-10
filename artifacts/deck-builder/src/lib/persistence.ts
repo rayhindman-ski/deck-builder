@@ -1,4 +1,4 @@
-import { createDefaultState, defaultAssets, SECTION_TITLES } from './defaults';
+import { BISTRO_TAGLINE, createDefaultState, defaultAssets, SECTION_TITLES } from './defaults';
 import type { DeckState, FontId, PersistTier } from './types';
 
 export const STORAGE_KEY = 'deckBuilder.state.v4';
@@ -32,6 +32,7 @@ export function migrate(raw: unknown, legacy = false): DeckState {
     if (typeof s.logo === 'string' && /svg|emblem|rayana/i.test(s.logo) && !s.logo.startsWith('builtin:')) style.logo = 'builtin:rayana-dark';
   }
   if (typeof style.logo !== 'string') style.logo = d.style.logo;
+  if (style.footerText === 'Den Haag Flagship · Specialty Roastery Hybrid') style.footerText = BISTRO_TAGLINE;
   if (style.coverBg && !/^#[0-9a-f]{6}$/i.test(style.coverBg)) style.coverBg = null;
 
   const f = isObj(raw.fin) ? raw.fin : isObj(raw.financials) ? raw.financials : {};
@@ -61,6 +62,7 @@ export function migrate(raw: unknown, legacy = false): DeckState {
   const i = isObj(raw.intake) ? raw.intake : {};
   const intake = { ...d.intake, ...Object.fromEntries(Object.entries(i).filter(([k, v]) => k in d.intake && typeof v === 'string')) } as DeckState['intake'];
   intake.subtitle = intake.subtitle.replace(/\s+and\s+three[-‑– ]shift.*$/i, '').trim();
+  intake.title = intake.title.replace(/Den Haag Flagship/gi, BISTRO_TAGLINE);
 
   const toc = (Array.isArray(raw.toc) ? raw.toc : d.toc)
     .map((t: unknown) => String(t).replace(/\|/g, '').replace(/\s{2,}/g, ' ').trim())
