@@ -23,7 +23,15 @@ Assume rent plus utilities of €3,000/month and 50 guests for each shift.
 
 **Why:** The user supplied these figures for the planning scenario, not as verified lease or sales data.
 
-The user approved applying the revised scenario: food/drinks spending of €4/€6 morning, €10/€5 lunch and €16/€6 dinner; staffing allowances of €144, €240 and €240 per shift, respectively; five operating days/week. They subsequently set food margin to 45% and coffee margin to 55%.
+The current user-supplied average tickets are €8.00 morning, €14.00 lunch and €18.00 dinner. Previously approved food portions remain €4, €10 and €16; drinks are the remainder of each ticket. Staffing allowances remain €144, €240 and €240 per shift, respectively; five operating days/week. Food margin is 45% and coffee margin is 55%.
+
+**Why:** The user changed the three average tickets without changing the food portions, staffing or margins. Do not invent a new spending split when changing the total ticket.
+
+Use 48 operating weeks per year, not 52.
+
+**Why:** The user changed slide six's annualisation assumption to 48 weeks/year.
+
+**How to apply:** Keep annual, monthly and quarterly projections consistent with this trading budget. Until closure dates are supplied, monthly trading days are apportioned by calendar weekday availability rather than inventing a holiday schedule. Annual rent and utilities still cover all twelve months.
 
 **How to apply:** These are approved planning estimates, not validated costs or observed sales. Keep rent/utilities separate from insurance, administration and other excluded costs. Changes to guest counts are shared across the deck's revenue forecasts; rent and staffing are used for the slide-five break-even estimate.
 

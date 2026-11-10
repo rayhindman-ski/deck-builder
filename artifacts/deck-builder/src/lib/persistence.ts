@@ -1,6 +1,6 @@
 import { BISTRO_TAGLINE, bistroSource, isBistroSource, createDefaultState, defaultAssets, SECTION_TITLES } from './defaults';
 import type { DeckState, FontId, PersistTier } from './types';
-import { withApprovedScenario } from './approved-scenario';
+import { APPROVED_TICKET_SCENARIO, withApprovedScenario } from './approved-scenario';
 
 export const STORAGE_KEY = 'deckBuilder.state.v4';
 const LEGACY_KEYS = ['deckBuilder.state.v3', 'deckBuilder.state.v2', 'deckBuilder.state.v1'];
@@ -50,6 +50,7 @@ export function migrate(raw: unknown, legacy = false, applyApproved = true): Dec
     };
   };
   const finBase = {
+    approvedTicketScenario: typeof f.approvedTicketScenario === 'string' ? f.approvedTicketScenario : undefined,
     takeawayScenarioApplied: f.takeawayScenarioApplied === true,
     takeaway: isObj(f.takeaway) ? {
       orders: Math.round(num(f.takeaway.orders, 0, 0, 2000)),
@@ -67,7 +68,7 @@ export function migrate(raw: unknown, legacy = false, applyApproved = true): Dec
   };
   // Loading existing browser state adopts the approved scenario once. Explicit
   // JSON imports instead preserve the financial figures in the chosen file.
-  const fin = applyApproved ? withApprovedScenario(finBase) : { ...finBase, planningScenarioApplied: true, approvedMarginsApplied: true, takeawayScenarioApplied: true };
+  const fin = applyApproved ? withApprovedScenario(finBase) : { ...finBase, planningScenarioApplied: true, approvedMarginsApplied: true, takeawayScenarioApplied: true, approvedTicketScenario: APPROVED_TICKET_SCENARIO };
 
   const urls = Array.isArray(raw.urls)
     ? raw.urls.filter((u: any) => isObj(u) && typeof u.url === 'string').map((u: any, i: number) => ({

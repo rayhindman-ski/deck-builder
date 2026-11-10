@@ -1,7 +1,7 @@
 import type { CSSProperties, ReactNode } from 'react';
 import type { DeckState, Financials } from '@/lib/types';
 import type { Model } from '@/lib/financial';
-import { fmtEur, fmtEur2, fmtNum, PROJECTION_YEAR } from '@/lib/financial';
+import { fmtEur, fmtEur2, fmtNum, OPERATING_WEEKS_PER_YEAR, PROJECTION_YEAR } from '@/lib/financial';
 import { coverBgOf, FONTS, isDark, LOGO_SIZES, THEMES, type Theme } from '@/lib/themes';
 import { BISTRO_DESCRIPTION, BISTRO_TAGLINE, COFFEE_DESCRIPTION, bistroSource, defaultAssets, isBistroSource, SECTION_TITLES } from '@/lib/defaults';
 import { Emblem, resolveLogo } from './Emblem';
@@ -386,7 +386,7 @@ function Unit(p: BodyProps) {
         {[
           { title: 'Annualisation basis', lines: [
             `${state.fin.days} operating days per week`,
-            '52 weeks per year',
+            `${OPERATING_WEEKS_PER_YEAR} weeks per year`,
             `${model.annualDays} operating days per year`,
           ] },
           { title: 'Year 1 gross revenue', lines: [
@@ -420,7 +420,7 @@ function Monthly(p: BodyProps) {
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       {p.interactive && p.scenario && <ScenarioBar {...p} />}
       <Eyebrow t={t}>Calendar P&L · Year 1 ({PROJECTION_YEAR})</Eyebrow>
-      <Title t={t} sub={`Operating days counted from the real ${PROJECTION_YEAR} calendar at ${state.fin.days} days per week; guest volumes rounded per month.`}>Twelve-Month Operating Forecast</Title>
+      <Title t={t} sub={`${model.annualDays} operating days (${OPERATING_WEEKS_PER_YEAR} weeks × ${state.fin.days} days), spread across the ${PROJECTION_YEAR} calendar by weekday availability; closure dates not specified.`}>Twelve-Month Operating Forecast</Title>
       <div style={card(t, { marginTop: 14, overflow: 'hidden' })}>
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead><tr>

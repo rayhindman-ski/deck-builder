@@ -8,6 +8,7 @@ export const SHIFTS = [
 export type ShiftKey = (typeof SHIFTS)[number]['key'];
 
 export const PROJECTION_YEAR = new Date().getFullYear() + 1;
+export const OPERATING_WEEKS_PER_YEAR = 48;
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
 export function compute(f: Financials) {
@@ -24,7 +25,7 @@ export function compute(f: Financials) {
   const takeawayDaily = ordersDay * takeawayCheck;
   const takeawayProfit = takeawayDaily * takeawayMargin / 100;
   const revDay = dineInRevDay + takeawayDaily;
-  const annualDays = f.days * 52;
+  const annualDays = f.days * OPERATING_WEEKS_PER_YEAR;
   const revYear = revDay * annualDays;
   const low = f.marginFood / 100;
   const high = f.marginCoffee / 100;
@@ -35,16 +36,27 @@ export function compute(f: Financials) {
   const profitDayLow = dineInRevDay * low + takeawayProfit;
   const profitDayHigh = dineInRevDay * high + takeawayProfit;
 
-  // Calendar months: operating days are the first `days` weekdays Mon..Sun.
-  const months = MONTHS.map((name, m) => {
+  // Use calendar weekday availability to distribute the annual trading budget.
+  // Closure dates are unknown; cumulative rounding preserves whole days and totals.
+  const calendarMonths = MONTHS.map((name, m) => {
     const dim = new Date(PROJECTION_YEAR, m + 1, 0).getDate();
     let op = 0;
     for (let d = 1; d <= dim; d++) {
       const wd = (new Date(PROJECTION_YEAR, m, d).getDay() + 6) % 7; // Mon=0
       if (wd < f.days) op++;
     }
+    return { name, short: name.slice(0, 3), calDays: dim, available: op };
+  });
+  const availableDays = calendarMonths.reduce((total, month) => total + month.available, 0);
+  let cumulativeDays = 0;
+  let allocatedDays = 0;
+  const months = calendarMonths.map(({ available, ...month }) => {
+    cumulativeDays += available;
+    const nextAllocated = availableDays ? Math.round(cumulativeDays * annualDays / availableDays) : 0;
+    const op = nextAllocated - allocatedDays;
+    allocatedDays = nextAllocated;
     const revenue = revDay * op;
-    return { name, short: name.slice(0, 3), calDays: dim, op, guests: Math.round(guestsDay * op), orders: Math.round(ordersDay * op), revenue, low: profitDayLow * op, high: profitDayHigh * op };
+    return { ...month, op, guests: Math.round(guestsDay * op), orders: Math.round(ordersDay * op), revenue, low: profitDayLow * op, high: profitDayHigh * op };
   });
   const monthTotal = months.reduce(
     (a, m) => ({ op: a.op + m.op, guests: a.guests + m.guests, revenue: a.revenue + m.revenue, low: a.low + m.low, high: a.high + m.high }),

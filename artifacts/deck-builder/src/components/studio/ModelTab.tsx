@@ -1,5 +1,5 @@
 import { useStore } from '@/lib/store';
-import { fmtEur, fmtEur2, fmtNum, SHIFTS } from '@/lib/financial';
+import { fmtEur, fmtEur2, fmtNum, OPERATING_WEEKS_PER_YEAR, SHIFTS } from '@/lib/financial';
 import { NumberSlider, Panel } from './parts';
 
 export function ModelTab() {
@@ -60,7 +60,7 @@ export function ModelTab() {
           <NumberSlider testId="growth" label="Annual growth rate" suffix="%" value={f.growth} min={0} max={50} onChange={(v) => patch('fin', { growth: v })} />
         </div>
         <div className="mt-5 rounded-lg bg-muted/60 p-3 font-mono text-[11px] leading-relaxed text-muted-foreground">
-          R_day = dine-in sales + takeaway orders × ticket = {fmtEur2(model.revDay)} · R_year = R_day × ({f.days} × 52) = {fmtEur2(model.revYear)} · Gross profit estimate = dine-in sales × {f.marginFood}% + takeaway sales × {model.takeaway.margin}% = {fmtEur2(model.profitDayLow)}/day · Years 2–3 = R_year × (1 + {f.growth}%)^n
+          R_day = dine-in sales + takeaway orders × ticket = {fmtEur2(model.revDay)} · R_year = R_day × ({f.days} × {OPERATING_WEEKS_PER_YEAR}) = {fmtEur2(model.revYear)} · Gross profit estimate = dine-in sales × {f.marginFood}% + takeaway sales × {model.takeaway.margin}% = {fmtEur2(model.profitDayLow)}/day · Years 2–3 = R_year × (1 + {f.growth}%)^n
         </div>
       </Panel>
     </div>

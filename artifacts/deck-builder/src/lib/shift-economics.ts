@@ -1,11 +1,12 @@
 import type { Financials, Shift } from './types';
+import { OPERATING_WEEKS_PER_YEAR } from './financial';
 
 const SHIFT_HOURS = { morning: 4, lunch: 5, dinner: 5 } as const;
 
 export function rentUtilitiesForShift(f: Financials, key: keyof typeof SHIFT_HOURS) {
   const monthly = f.rentUtilitiesMonthly;
   if (monthly == null || !Number.isFinite(monthly) || f.days <= 0) return null;
-  return Math.max(0, monthly) * 12 / (f.days * 52) * SHIFT_HOURS[key] / 14;
+  return Math.max(0, monthly) * 12 / (f.days * OPERATING_WEEKS_PER_YEAR) * SHIFT_HOURS[key] / 14;
 }
 
 /** Break-even is a planning estimate, not the deck's gross-profit range. */

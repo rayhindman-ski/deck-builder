@@ -1,5 +1,5 @@
 import { useStore } from '@/lib/store';
-import { fmtEur2, SHIFTS } from '@/lib/financial';
+import { fmtEur2, OPERATING_WEEKS_PER_YEAR, SHIFTS } from '@/lib/financial';
 import { rentUtilitiesForShift, shiftEconomics } from '@/lib/shift-economics';
 import { Input } from '@/components/ui/input';
 
@@ -20,7 +20,7 @@ export function ShiftAssumptions() {
             const value = event.target.value === '' ? null : Number(event.target.value);
             if (value === null || Number.isFinite(value)) patch('fin', { rentUtilitiesMonthly: value === null ? null : Math.max(0, Math.min(100000, value)) });
           }} />
-        <span className="text-muted-foreground">Allocated over {f.days * 52} operating days/year and by shift length (4h / 5h / 5h).</span>
+        <span className="text-muted-foreground">Allocated over {f.days * OPERATING_WEEKS_PER_YEAR} operating days/year and by shift length (4h / 5h / 5h).</span>
       </label>
       <div className="mt-4 grid gap-4 md:grid-cols-3">
         {SHIFTS.map(({ key, label }) => {
