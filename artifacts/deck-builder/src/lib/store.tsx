@@ -34,7 +34,10 @@ export function StoreProvider({ children }: { children: ReactNode }) {
 
   // Also update an already-open editor after hot reload, without replacing user edits later.
   useEffect(() => {
-    setState(s => s.fin.planningScenarioApplied ? s : { ...s, fin: withApprovedScenario(s.fin) });
+    setState(s => {
+      const fin = withApprovedScenario(s.fin);
+      return fin === s.fin ? s : { ...s, fin };
+    });
   }, []);
 
   useEffect(() => {

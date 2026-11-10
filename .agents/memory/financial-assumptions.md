@@ -15,6 +15,6 @@ Assume rent plus utilities of €3,000/month and 50 guests for each shift.
 
 **Why:** The user supplied these figures for the planning scenario, not as verified lease or sales data.
 
-The user approved applying the revised scenario: food/drinks spending of €4/€6 morning, €10/€5 lunch and €16/€6 dinner; staffing allowances of €144, €240 and €240 per shift, respectively; food/drink margins of 30%/65%; five operating days/week. Break-even attendance is 36, 47 and 34 guests.
+The user approved applying the revised scenario: food/drinks spending of €4/€6 morning, €10/€5 lunch and €16/€6 dinner; staffing allowances of €144, €240 and €240 per shift, respectively; five operating days/week. They subsequently set food margin to 45% and coffee margin to 55%.
 
 **How to apply:** These are approved planning estimates, not validated costs or observed sales. Keep rent/utilities separate from insurance, administration and other excluded costs. Changes to guest counts are shared across the deck's revenue forecasts; rent and staffing are used for the slide-five break-even estimate.

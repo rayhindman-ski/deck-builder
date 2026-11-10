@@ -69,6 +69,7 @@ export interface Shift {
 
 export interface Financials {
   planningScenarioApplied?: boolean;
+  approvedMarginsApplied?: boolean;
   rentUtilitiesMonthly?: number | null;
   morning: Shift;
   lunch: Shift;

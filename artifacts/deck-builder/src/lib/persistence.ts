@@ -51,6 +51,7 @@ export function migrate(raw: unknown, legacy = false, applyApproved = true): Dec
   };
   const finBase = {
     planningScenarioApplied: f.planningScenarioApplied === true,
+    approvedMarginsApplied: f.approvedMarginsApplied === true,
     rentUtilitiesMonthly: optionalAmount(f.rentUtilitiesMonthly, 100000),
     morning: shift('morning'), lunch: shift('lunch'), dinner: shift('dinner'),
     days: Math.round(num(f.days, d.fin.days, 1, 7)),
@@ -60,7 +61,7 @@ export function migrate(raw: unknown, legacy = false, applyApproved = true): Dec
   };
   // Loading existing browser state adopts the approved scenario once. Explicit
   // JSON imports instead preserve the financial figures in the chosen file.
-  const fin = applyApproved ? withApprovedScenario(finBase) : { ...finBase, planningScenarioApplied: true };
+  const fin = applyApproved ? withApprovedScenario(finBase) : { ...finBase, planningScenarioApplied: true, approvedMarginsApplied: true };
 
   const urls = Array.isArray(raw.urls)
     ? raw.urls.filter((u: any) => isObj(u) && typeof u.url === 'string').map((u: any, i: number) => ({
