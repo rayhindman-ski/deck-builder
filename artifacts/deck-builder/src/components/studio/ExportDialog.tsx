@@ -4,11 +4,12 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import type { ExportMode, useDeckSaver } from '@/lib/use-deck-saver';
+import { errorMessage } from '@/lib/export-pdf';
 
 const fmtBytes = (b: number) => (b > 1048576 ? `${(b / 1048576).toFixed(2)} MB` : `${Math.round(b / 1024)} KB`);
 
 export function ExportDialog({ open, onOpenChange, saver }: { open: boolean; onOpenChange: (o: boolean) => void; saver: ReturnType<typeof useDeckSaver> }) {
-  const list = useListDeckExports();
+  const list = useListDeckExports({ query: { enabled: open, retry: 1, refetchOnMount: 'always' } });
   const versions = [...(list.data ?? [])].sort((a, b) => b.version - a.version);
   const next = (versions[0]?.version ?? 0) + 1;
 
@@ -24,7 +25,7 @@ export function ExportDialog({ open, onOpenChange, saver }: { open: boolean; onO
         <DialogHeader>
           <DialogTitle className="font-display text-2xl">Save & export</DialogTitle>
           <DialogDescription>
-            Every action archives a real PDF as <span className="font-mono">replit-example-deck-vNN.pdf</span>. Versions are allocated server-side from the highest file already in doc/decks, so numbers keep climbing across refreshes and never overwrite. Next expected: <b className="font-mono">v{String(next).padStart(2, '0')}</b>.
+            Every action archives a real PDF as <span className="font-mono">replit-example-deck-vNN.pdf</span>. Versions are allocated server-side from the highest file already in doc/decks, so numbers keep climbing across refreshes and never overwrite. {list.isSuccess ? <>Next expected: <b className="font-mono">v{String(next).padStart(2, '0')}</b>.</> : 'The next version will be confirmed when the archive connects.'}
           </DialogDescription>
         </DialogHeader>
 
@@ -64,7 +65,7 @@ export function ExportDialog({ open, onOpenChange, saver }: { open: boolean; onO
           <div className="max-h-56 overflow-y-auto rounded-lg border">
             {list.isLoading && <div className="space-y-2 p-3">{[0, 1, 2].map((i) => <Skeleton key={i} className="h-8" />)}</div>}
             {list.isError && (
-              <div className="flex items-center justify-between p-3 text-sm text-destructive">Could not load history.<Button size="sm" variant="outline" onClick={() => list.refetch()}>Retry</Button></div>
+              <div className="flex items-center justify-between gap-3 p-3 text-sm text-destructive"><span>Could not load history: {errorMessage(list.error)}</span><Button size="sm" variant="outline" onClick={() => list.refetch()}>Retry</Button></div>
             )}
             {!list.isLoading && !list.isError && versions.length === 0 && <div className="p-6 text-center text-sm text-muted-foreground">No archived versions yet. Your first export becomes v01.</div>}
             {versions.map((v) => (

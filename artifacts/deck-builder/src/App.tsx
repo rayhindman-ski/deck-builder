@@ -7,6 +7,7 @@ import NotFound from '@/pages/not-found';
 import { Studio } from '@/pages/studio';
 import { LivePreview } from '@/pages/live-preview';
 import { StoreProvider } from '@/lib/store';
+import { installDeckFonts } from '@/lib/deck-fonts';
 import {
   Route,
   Switch,
@@ -14,6 +15,7 @@ import {
   Router as WouterRouter,
 } from 'wouter';
 
+installDeckFonts();
 const queryClient = new QueryClient();
 
 function Router() {

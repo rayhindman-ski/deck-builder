@@ -1,0 +1,16 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "l0CSdGjwMOyjv4l9sVXS8"
+uri = "file://doc/decks/replit-example-deck-v04.pdf"
+type = "pdf"
+title = "Rayana’s Bistro — verified deck PDF"
+description = "Nine-page landscape A4 deck, archived as version 04 during export verification."
+logical_id = "9ec5d3c4-012f-41d7-9122-eaaacab2dba1"
+content_hash = "sha256:bf6af599ddc5edee9b41b0bfd293c0a59ae94d1a5f0a1e838016a985323b9655"
+size = 2674907
+mtime_ms = 1794339256361
+storage_uri = "gcs://replit-rams-assets-kira/rams/assets/repl:a3c2499d-8ca7-4c09-99db-3552da9cb2bc/9ec5d3c4-012f-41d7-9122-eaaacab2dba1/f0618a98-f3f9-4d93-84e5-bf469be87d72"
+storage_version_token = "1794339426637875"
+content_type = "application/pdf"
