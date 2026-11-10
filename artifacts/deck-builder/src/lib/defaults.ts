@@ -30,9 +30,10 @@ export const defaultAssets = (): Asset[] => [
 
 export const isBistroSource = (url: string) => /^https?:\/\/(?:www\.)?rayanabisto\.com(?:[/?#]|$)/i.test(url);
 
+export const BISTRO_DESCRIPTION = 'Original Indonesia Recipies hand crafted served with a smile like the warm tropical sun';
 export const bistroSource = (): UrlEntry => ({
   id: 'u3-bistro', url: 'https://www.rayanabisto.com', role: 'Menu & Catering',
-  status: null, title: "Rayana's Bistro", summary: '', notes: 'Coming soon',
+  status: null, title: "Rayana's Bistro", summary: '', notes: BISTRO_DESCRIPTION,
   checkedAt: null, error: null,
 });
 
