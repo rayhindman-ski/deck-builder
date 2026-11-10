@@ -3,7 +3,7 @@ import type { DeckState, Asset, UrlEntry, Intake, Audience } from './types';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 export const pub = (p: string) => `${base}${p}`;
 
-export const EMBLEM_SRC = pub('/brand/rayana-bistro-transparent.png');
+export const EMBLEM_SRC = pub('/brand/rayana-bistro-hapjes.png');
 export const COFFEE_LOGO_SRC = pub('/brand/rayana-coffees.png');
 
 export const SECTION_TITLES = [

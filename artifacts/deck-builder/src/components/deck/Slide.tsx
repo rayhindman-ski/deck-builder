@@ -102,7 +102,7 @@ function Cover({ state, model, t, ink, muted, coverDark, logo }: BodyProps) {
     ['Daily Guests', fmtNum(model.guestsDay), `${state.fin.days} days / week`],
     ['Daily Revenue', fmtEur(model.revDay), `avg check ${fmtEur2(model.avgCheck)}`],
     ['Year 1 Revenue', fmtEur(model.revYear), `${model.annualDays} operating days`],
-    ['Year 1 Profit Range', `${fmtK(model.profitYearLow)} – ${fmtK(model.profitYearHigh)}`, `${state.fin.marginFood}% – ${state.fin.marginCoffee}% margin`],
+    ['Year 1 Profit Estimate', fmtEur(model.profitYearLow), `Conservative ${state.fin.marginFood}% margin`],
   ];
   return (
     <div style={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
@@ -119,7 +119,7 @@ function Cover({ state, model, t, ink, muted, coverDark, logo }: BodyProps) {
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12, width: '100%', paddingBottom: 26 }}>
         {kpis.map(([k, v, n]) => (
-          <div key={k} style={{ textAlign: 'left', padding: '14px 16px', borderRadius: 10, background: coverDark ? 'rgba(247,235,214,0.07)' : t.surface, border: `1px solid ${coverDark ? 'rgba(247,235,214,0.18)' : t.line}` }}>
+          <div key={k} style={{ textAlign: 'center', padding: '14px 16px', borderRadius: 10, background: coverDark ? 'rgba(247,235,214,0.07)' : t.surface, border: `1px solid ${coverDark ? 'rgba(247,235,214,0.18)' : t.line}` }}>
             <div style={{ fontFamily: MONO, fontSize: 9.5, letterSpacing: '0.14em', textTransform: 'uppercase', color: coverDark ? '#D9B36A' : t.accent }}>{k}</div>
             <div style={{ fontSize: 24, fontWeight: 700, marginTop: 6, color: ink, fontVariantNumeric: 'tabular-nums' }}>{v}</div>
             <div style={{ fontSize: 11, color: muted, marginTop: 2 }}>{n}</div>
