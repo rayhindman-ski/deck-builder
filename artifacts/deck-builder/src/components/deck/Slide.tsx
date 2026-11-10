@@ -5,6 +5,7 @@ import { fmtEur, fmtEur2, fmtK, fmtNum, PROJECTION_YEAR } from '@/lib/financial'
 import { coverBgOf, FONTS, isDark, LOGO_SIZES, THEMES, type Theme } from '@/lib/themes';
 import { BISTRO_TAGLINE, bistroSource, defaultAssets, isBistroSource, SECTION_TITLES } from '@/lib/defaults';
 import { Emblem, resolveLogo } from './Emblem';
+import { ShiftInsights } from './ShiftInsights';
 import { SLIDE_COUNT, SLIDE_H, SLIDE_W } from './constants';
 
 export interface SlideProps {
@@ -284,7 +285,7 @@ function ScenarioBar({ state, t, onFin }: BodyProps) {
 }
 
 function Shifts(p: BodyProps) {
-  const { model, t } = p;
+  const { model, t, state } = p;
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       {p.interactive && p.scenario && <ScenarioBar {...p} />}
@@ -300,6 +301,7 @@ function Shifts(p: BodyProps) {
               <Stat t={t} k="Guests / day" v={fmtNum(s.guests)} />
               <Stat t={t} k="Average check" v={fmtEur2(s.check)} />
             </div>
+            <ShiftInsights shift={state.fin[s.key]} financials={state.fin} theme={t} />
             <div style={{ marginTop: 'auto', paddingTop: 16, borderTop: `1px solid ${t.line}` }}>
               <Stat t={t} k="Daily turnover" v={fmtEur(s.daily)} big />
               <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 10, fontSize: 12, color: t.muted }}>

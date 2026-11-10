@@ -60,6 +60,10 @@ export interface Intake {
 export interface Shift {
   guests: number;
   check: number;
+  /** Food portion of the average check; unset until entered by the user. */
+  foodCheck?: number | null;
+  /** Staffing and allocated overhead per operating day, excluding ingredients. */
+  costsPerDay?: number | null;
 }
 
 export interface Financials {

@@ -8,6 +8,7 @@ import { SLIDE_COUNT } from '@/components/deck/constants';
 import { Switch } from '@/components/ui/switch';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
+import { ShiftAssumptions } from './ShiftAssumptions';
 
 export function DeckTab() {
   const { state, model, slide, setSlide, patch } = useStore();
@@ -56,6 +57,7 @@ export function DeckTab() {
         </label>
       </div>
 
+      {slide === 4 && <ShiftAssumptions />}
       <div className="rounded-xl bg-[hsl(var(--muted))] p-3 sm:p-6">
         <div key={slide} className="overflow-hidden rounded-md slide-shadow rise">
           <ScaledA4>

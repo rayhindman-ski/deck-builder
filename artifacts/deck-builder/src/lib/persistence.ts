@@ -36,10 +36,17 @@ export function migrate(raw: unknown, legacy = false): DeckState {
   if (style.coverBg && !/^#[0-9a-f]{6}$/i.test(style.coverBg)) style.coverBg = null;
 
   const f = isObj(raw.fin) ? raw.fin : isObj(raw.financials) ? raw.financials : {};
-  const shift = (k: 'morning' | 'lunch' | 'dinner') => ({
-    guests: num(f[k]?.guests, d.fin[k].guests, 0, 2000),
-    check: num(f[k]?.check, d.fin[k].check, 0, 500),
-  });
+  const optionalAmount = (value: unknown, max: number) =>
+    value == null || value === '' || !Number.isFinite(Number(value)) ? null : num(value, 0, 0, max);
+  const shift = (k: 'morning' | 'lunch' | 'dinner') => {
+    const check = num(f[k]?.check, d.fin[k].check, 0, 500);
+    return {
+      guests: num(f[k]?.guests, d.fin[k].guests, 0, 2000),
+      check,
+      foodCheck: optionalAmount(f[k]?.foodCheck, check),
+      costsPerDay: optionalAmount(f[k]?.costsPerDay, 100000),
+    };
+  };
   const fin = {
     morning: shift('morning'), lunch: shift('lunch'), dinner: shift('dinner'),
     days: Math.round(num(f.days, d.fin.days, 1, 7)),

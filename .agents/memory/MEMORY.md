@@ -1,3 +1,4 @@
 - [Cover branding](cover-branding.md) — cover copy and transparent-logo requirements.
 - [Cross-tab preview](cross-tab-preview.md) — account for storage partitioning between the embedded editor and a top-level preview tab.
 - [Rayana offerings](rayana-offerings.md) — Coffee Wisdom workshops and Indonesian catering are part of the business offering.
+- [Financial assumptions](financial-assumptions.md) — break-even needs explicit spending and cost inputs; never invent business figures.
