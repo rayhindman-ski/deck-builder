@@ -20,6 +20,22 @@ export interface SlideProps {
 
 const MONO = "'JetBrains Mono', SFMono-Regular, monospace";
 
+const CHAPTER_TITLES = [
+  'Great Indonesian Food, Coffee & Culture',
+  'Taste, Discover & Enjoy',
+  'Shift Revenue Overview',
+  'Daily Unit Economics',
+  'Twelve-Month Operating Forecast',
+  'Three-Year Quarterly Roadmap',
+] as const;
+
+function caseTitle(state: DeckState) {
+  const audience = state.intake.audience;
+  return audience === 'Franchise Partners' ? 'A Distinctive Concept. Room to Grow.'
+    : audience === 'Municipal Authorities' ? 'A Welcoming Place for the Neighbourhood.'
+    : 'A Place to Remember. An Experience to Share';
+}
+
 function Eyebrow({ t, children }: { t: Theme; children: ReactNode }) {
   return <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: '0.16em', textTransform: 'uppercase', color: t.accent, fontWeight: 600 }}>{children}</div>;
 }
@@ -140,7 +156,7 @@ function Toc({ state, t, onJump, interactive }: BodyProps) {
         <div style={{ marginTop: 26, height: 3, width: 64, background: t.accent, borderRadius: 2 }} />
       </div>
       <ol style={{ listStyle: 'none', margin: 0, padding: '14px 0 0' }}>
-        {state.toc.map((title, i) => {
+        {[...CHAPTER_TITLES, caseTitle(state)].map((title, i) => {
           const target = i + 2;
           return (
             <li key={i}>
@@ -195,7 +211,7 @@ function Brand({ state, t }: BodyProps) {
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       <Eyebrow t={t}>Origin · Heritage · Ecosystem</Eyebrow>
       <Title t={t} sub="Two decades of direct relationships with Indonesian smallholders, translated into a European bistro that serves from first coffee to last plate.">
-        Great Indonesian Food, Coffee & Culture
+        {CHAPTER_TITLES[0]}
       </Title>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.15fr', gap: 18, marginTop: 20, flex: 1, minHeight: 0, paddingBottom: 18 }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
@@ -247,7 +263,7 @@ function Pillars({ state, t }: BodyProps) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       <Eyebrow t={t}>Product Matrix · Revenue Engines</Eyebrow>
-      <Title t={t} sub="Coffee, retail and hands-on learning, alongside Indonesian snacks, bistro meals and catering for every occasion.">Taste, Discover &amp; Enjoy</Title>
+      <Title t={t} sub="Coffee, retail and hands-on learning, alongside Indonesian snacks, bistro meals and catering for every occasion.">{CHAPTER_TITLES[1]}</Title>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gridTemplateRows: 'repeat(2, minmax(0, 1fr))', gap: 14, marginTop: 20, flex: 1, minHeight: 0 }}>
         {pillars.map(([name, m, d, when], i) => (
           <div key={name} style={card(t, { padding: '18px 20px', display: 'flex', flexDirection: 'column' })}>
@@ -297,7 +313,7 @@ function Shifts(p: BodyProps) {
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       {p.interactive && p.scenario && <ScenarioBar {...p} />}
       <Eyebrow t={t}>Three Shifts · All-Day Orders</Eyebrow>
-      <Title t={t} sub="Morning, lunch and dinner, complemented by takeaway orders and catering.">Shift Revenue Overview</Title>
+      <Title t={t} sub="Morning, lunch and dinner, complemented by takeaway orders and catering.">{CHAPTER_TITLES[2]}</Title>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: 14, marginTop: 16, flex: 1, minHeight: 0, paddingBottom: 10 }}>
         {model.dailyRows.map((s, i) => (
           <div key={s.key} data-testid={`shift-card-${s.key}`} style={card(t, { padding: '12px 14px', display: 'flex', flexDirection: 'column', borderTop: `4px solid ${i === 2 ? t.second : t.accent}` })}>
@@ -352,7 +368,7 @@ function Unit(p: BodyProps) {
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       {p.interactive && p.scenario && <ScenarioBar {...p} />}
       <Eyebrow t={t}>P&L Granularity · Per-Day Turnover</Eyebrow>
-      <Title t={t} sub={`Gross profit estimate: ${state.fin.marginFood}% dine-in; ${model.takeaway.margin}% takeaway food & coffee. Before staffing, rent and other operating costs.`}>Daily Unit Economics</Title>
+      <Title t={t} sub={`Gross profit estimate: ${state.fin.marginFood}% dine-in; ${model.takeaway.margin}% takeaway food & coffee. Before staffing, rent and other operating costs.`}>{CHAPTER_TITLES[3]}</Title>
       <div style={card(t, { marginTop: 20, overflow: 'hidden' })}>
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead><tr>
@@ -420,7 +436,7 @@ function Monthly(p: BodyProps) {
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       {p.interactive && p.scenario && <ScenarioBar {...p} />}
       <Eyebrow t={t}>Calendar P&L · Year 1 ({PROJECTION_YEAR})</Eyebrow>
-      <Title t={t} sub={`${model.annualDays} operating days (${OPERATING_WEEKS_PER_YEAR} weeks × ${state.fin.days} days), spread across the ${PROJECTION_YEAR} calendar by weekday availability; closure dates not specified.`}>Twelve-Month Operating Forecast</Title>
+      <Title t={t} sub={`${model.annualDays} operating days (${OPERATING_WEEKS_PER_YEAR} weeks × ${state.fin.days} days), spread across the ${PROJECTION_YEAR} calendar by weekday availability; closure dates not specified.`}>{CHAPTER_TITLES[4]}</Title>
       <div style={card(t, { marginTop: 14, overflow: 'hidden' })}>
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead><tr>
@@ -462,7 +478,7 @@ function Quarterly(p: BodyProps) {
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       {p.interactive && p.scenario && <ScenarioBar {...p} />}
       <Eyebrow t={t}>Medium-Term Trajectory · 12 Quarters</Eyebrow>
-      <Title t={t} sub={`Year 1 seasonality compounded at ${state.fin.growth}% per year as regulars mature, bean retail grows and catering comes online.`}>Three-Year Quarterly Roadmap</Title>
+      <Title t={t} sub={`Year 1 seasonality compounded at ${state.fin.growth}% per year as regulars mature, bean retail grows and catering comes online.`}>{CHAPTER_TITLES[5]}</Title>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, marginTop: 16 }}>
         {model.years.map((y) => (
           <div key={y.year} style={card(t, { padding: '12px 16px' })}>
@@ -495,8 +511,7 @@ function Quarterly(p: BodyProps) {
 }
 
 function Case({ state, model, t }: BodyProps) {
-  const a = state.intake.audience;
-  const head = a === 'Franchise Partners' ? 'A Distinctive Concept. Room to Grow.' : a === 'Municipal Authorities' ? 'A Welcoming Place for the Neighbourhood.' : 'A Place to Remember. An Experience to Share';
+  const head = caseTitle(state);
   const items = [
     ['A Clear Revenue Model', `${fmtEur(model.revYear)} projected Year 1 revenue, based on ${fmtNum(model.guestsDay)} dine-in guests and ${fmtNum(model.ordersDay)} takeaway orders a day across ${model.annualDays} trading days.`],
     ['Balanced Trading', `Revenue is spread across breakfast, lunch and dinner; no single shift accounts for more than ${(Math.max(...model.shifts.map((s) => s.share)) * 100).toFixed(0)}% of projected daily sales.`],
