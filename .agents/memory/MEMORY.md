@@ -3,3 +3,4 @@
 - [Rayana offerings](rayana-offerings.md) — Coffee Wisdom workshops and Indonesian catering are part of the business offering.
 - [Financial assumptions](financial-assumptions.md) — break-even needs explicit spending and cost inputs; never invent business figures.
 - [PDF export reliability](pdf-export-reliability.md) — bundle fonts and report missing assets clearly; avoid remote stylesheet scanning during PDF rendering.
+- [Retail image edits](retail-image-edits.md) — retain the original café scene; change only the bags, with Srikandi in front and Macan behind.
