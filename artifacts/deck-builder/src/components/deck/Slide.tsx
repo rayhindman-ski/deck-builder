@@ -24,7 +24,7 @@ const CHAPTER_TITLES = [
   'Great Indonesian Food, Coffee & Culture',
   'Taste, Discover & Enjoy',
   'Shift Revenue Overview',
-  'Daily Unit Economics',
+  'Daily Performance, Yearly Outlook',
   'Twelve-Month Operating Forecast',
   'Three-Year Quarterly Roadmap',
 ] as const;

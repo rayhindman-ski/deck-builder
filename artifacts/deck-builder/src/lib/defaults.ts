@@ -13,7 +13,7 @@ export const SECTION_TITLES = [
   'Brand & Sources',
   'Offerings & Pillars',
   'Shift Revenue Architecture',
-  'Daily Unit Economics',
+  'Daily Performance, Yearly Outlook',
   'Year 1 Monthly Projection',
   'Three-Year Quarterly Projection',
   'Commercial & Investor Case',
