@@ -271,7 +271,7 @@ function Pillars({ state, t }: BodyProps) {
         {pillars.map(([name, m, d, when], i) => (
           <div key={name} style={card(t, { padding: '12px 14px', display: 'flex', flexDirection: 'column', minHeight: 0, overflow: 'hidden' })}>
             <div style={{ height: 96, flexShrink: 0, borderRadius: 6, overflow: 'hidden', background: t.accentSoft, marginBottom: 8 }}>
-              <img data-testid={`img-offering-${OFFERING_IMAGES[i]}`} src={pub(`/samples/offerings-${OFFERING_IMAGES[i]}.jpg`)} alt={name} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+              <img data-testid={`img-offering-${OFFERING_IMAGES[i]}`} src={pub(`/samples/offerings-${OFFERING_IMAGES[i]}${i === 1 ? '-rayana' : ''}.jpg`)} alt={i === 1 ? "Rayana Roast Srikandi's Kiss in front of Macan Guardian coffee bags" : name} style={{ width: '100%', height: '100%', objectFit: i === 1 ? 'contain' : 'cover', display: 'block' }} />
             </div>
             <div style={{ display: 'flex', gap: 12, flexShrink: 0 }}>
               <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 6 }}>
