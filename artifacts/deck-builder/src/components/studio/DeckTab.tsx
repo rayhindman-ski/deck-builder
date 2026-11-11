@@ -4,7 +4,7 @@ import { useStore } from '@/lib/store';
 import { SECTION_TITLES } from '@/lib/defaults';
 import { Slide } from '@/components/deck/Slide';
 import { ScaledA4 } from '@/components/deck/ScaledA4';
-import { SLIDE_COUNT } from '@/components/deck/constants';
+import { SLIDE_COUNT, slideLabel } from '@/components/deck/constants';
 import { Switch } from '@/components/ui/switch';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
@@ -14,7 +14,7 @@ export function DeckTab() {
   const { state, model, slide, setSlide, patch } = useStore();
   const [scenario, setScenario] = useState(false);
   const strip = useRef<HTMLDivElement>(null);
-  const scenarioCapable = slide >= 4 && slide <= 7;
+  const scenarioCapable = slide >= 5 && slide <= 8;
 
   useEffect(() => {
     strip.current?.querySelector<HTMLElement>(`[data-idx="${slide}"]`)?.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
@@ -39,7 +39,7 @@ export function DeckTab() {
             <div className={`overflow-hidden rounded transition-all ${slide === i ? 'ring-2 ring-primary ring-offset-2 ring-offset-background' : 'opacity-70 hover:opacity-100'}`}>
               <ScaledA4><Slide index={i} state={state} model={model} /></ScaledA4>
             </div>
-            <div className="mt-1 truncate font-mono text-[10.5px] text-muted-foreground"><b className="text-foreground">{i + 1}</b> · {i < 2 ? SECTION_TITLES[i] : state.toc[i - 2]}</div>
+            <div className="mt-1 truncate font-mono text-[10.5px] text-muted-foreground"><b className="text-foreground">{i + 1}</b> · {slideLabel(i, state.toc, SECTION_TITLES)}</div>
           </button>
         ))}
       </div>
@@ -49,7 +49,7 @@ export function DeckTab() {
           <Button data-testid="button-prev-slide" size="icon" variant="outline" onClick={() => setSlide(slide - 1)} disabled={slide === 0} aria-label="Previous slide"><ChevronLeft className="h-4 w-4" /></Button>
           <span className="tnum min-w-[72px] text-center font-mono text-sm" data-testid="text-slide-pos">{slide + 1} / {SLIDE_COUNT}</span>
           <Button data-testid="button-next-slide" size="icon" variant="outline" onClick={() => setSlide(slide + 1)} disabled={slide === SLIDE_COUNT - 1} aria-label="Next slide"><ChevronRight className="h-4 w-4" /></Button>
-          <span className="ml-2 font-display text-lg">{slide < 2 ? SECTION_TITLES[slide] : state.toc[slide - 2]}</span>
+          <span className="ml-2 font-display text-lg">{slideLabel(slide, state.toc, SECTION_TITLES)}</span>
         </div>
         <label className={`flex items-center gap-2 rounded-full border bg-card px-3 py-1.5 text-xs ${scenarioCapable ? '' : 'opacity-50'}`}>
           <SlidersHorizontal className="h-3.5 w-3.5" /> In-slide what-if sliders
@@ -57,7 +57,7 @@ export function DeckTab() {
         </label>
       </div>
 
-      {slide === 4 && <ShiftAssumptions />}
+      {slide === 5 && <ShiftAssumptions />}
       <div className="rounded-xl bg-[hsl(var(--muted))] p-3 sm:p-6">
         <div key={slide} className="overflow-hidden rounded-md slide-shadow rise">
           <ScaledA4>

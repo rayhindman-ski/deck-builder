@@ -3,10 +3,10 @@ import type { DeckState, Financials } from '@/lib/types';
 import type { Model } from '@/lib/financial';
 import { fmtEur, fmtEur2, fmtNum, OPERATING_WEEKS_PER_YEAR, PROJECTION_YEAR } from '@/lib/financial';
 import { coverBgOf, FONTS, isDark, LOGO_SIZES, THEMES, type Theme } from '@/lib/themes';
-import { BISTRO_DESCRIPTION, BISTRO_TAGLINE, COFFEE_DESCRIPTION, bistroSource, defaultAssets, isBistroSource, SECTION_TITLES } from '@/lib/defaults';
+import { pub, BISTRO_DESCRIPTION, BISTRO_TAGLINE, COFFEE_DESCRIPTION, bistroSource, defaultAssets, isBistroSource, SECTION_TITLES } from '@/lib/defaults';
 import { Emblem, resolveLogo } from './Emblem';
 import { ShiftInsights, TakeawayInsights } from './ShiftInsights';
-import { SLIDE_COUNT, SLIDE_H, SLIDE_W } from './constants';
+import { baseSlot, SLIDE_COUNT, SLIDE_H, SLIDE_W } from './constants';
 
 export interface SlideProps {
   index: number;
@@ -66,7 +66,8 @@ export function Slide(p: SlideProps) {
   const num =
     s.numbering === 'none' ? '' : s.numbering === 'x-slash-y' ? `${index + 1} / ${SLIDE_COUNT}` : `Slide ${index + 1} of ${SLIDE_COUNT}`;
 
-  const sectionLabel = index < 2 ? SECTION_TITLES[index] : `${String(index - 1).padStart(2, '0')}. ${state.toc[index - 2] ?? SECTION_TITLES[index]}`;
+  const slot = baseSlot(index);
+  const sectionLabel = slot < 2 ? SECTION_TITLES[slot] : `${String(slot - 1).padStart(2, '0')}. ${state.toc[slot - 2] ?? SECTION_TITLES[slot]}`;
 
   return (
     <div
@@ -105,10 +106,11 @@ function Body(p: BodyProps) {
     case 1: return <Toc {...p} />;
     case 2: return <Brand {...p} />;
     case 3: return <Pillars {...p} />;
-    case 4: return <Shifts {...p} />;
-    case 5: return <Unit {...p} />;
-    case 6: return <Monthly {...p} />;
-    case 7: return <Quarterly {...p} />;
+    case 4: return <Pillars {...p} illustrated />;
+    case 5: return <Shifts {...p} />;
+    case 6: return <Unit {...p} />;
+    case 7: return <Monthly {...p} />;
+    case 8: return <Quarterly {...p} />;
     default: return <Case {...p} />;
   }
 }
@@ -156,7 +158,7 @@ function Toc({ state, t, onJump, interactive }: BodyProps) {
         <div style={{ marginTop: 26, height: 3, width: 64, background: t.accent, borderRadius: 2 }} />
       </div>
       <ol style={{ listStyle: 'none', margin: 0, padding: '14px 0 0' }}>
-        {[...CHAPTER_TITLES, caseTitle(state)].map((title, i) => {
+        {[...CHAPTER_TITLES.slice(0, 2), `${CHAPTER_TITLES[1]} (Illustrated)`, ...CHAPTER_TITLES.slice(2), caseTitle(state)].map((title, i) => {
           const target = i + 2;
           return (
             <li key={i}>
@@ -164,7 +166,7 @@ function Toc({ state, t, onJump, interactive }: BodyProps) {
                 role={interactive ? 'button' : undefined}
                 data-testid={`toc-jump-${target + 1}`}
                 onClick={interactive && onJump ? () => onJump(target) : undefined}
-                style={{ display: 'flex', alignItems: 'baseline', gap: 12, padding: '15px 0', borderBottom: `1px solid ${t.line}`, cursor: interactive ? 'pointer' : 'default' }}
+                style={{ display: 'flex', alignItems: 'baseline', gap: 12, padding: '11px 0', borderBottom: `1px solid ${t.line}`, cursor: interactive ? 'pointer' : 'default' }}
               >
                 <span style={{ fontFamily: MONO, fontSize: 14, color: t.accent, fontWeight: 600, width: 34 }}>{String(i + 1).padStart(2, '0')}.</span>
                 <span style={{ fontSize: 20, fontWeight: 600, color: t.ink }}>{title}</span>
@@ -250,7 +252,9 @@ function Brand({ state, t }: BodyProps) {
   );
 }
 
-function Pillars({ state, t }: BodyProps) {
+const OFFERING_IMAGES = ['coffee-bar', 'roasted-beans', 'coffee-wisdom', 'snacks-desserts', 'bistro-meals', 'events-catering'];
+
+function Pillars({ state, t, illustrated }: BodyProps & { illustrated?: boolean }) {
   const { marginCoffee: mc, marginFood: mf } = state.fin;
   const pillars = [
     ['Specialty Coffee Bar', mc, 'Single-origin pour-overs, espresso from Gayo and Java Malabar, iced pandan lattes and oat-milk craft drinks.', 'Morning & all-day'],
@@ -266,6 +270,24 @@ function Pillars({ state, t }: BodyProps) {
       <Title t={t} sub="Coffee, retail and hands-on learning, alongside Indonesian snacks, bistro meals and catering for every occasion.">{CHAPTER_TITLES[1]}</Title>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gridTemplateRows: 'repeat(2, minmax(0, 1fr))', gap: 14, marginTop: 20, flex: 1, minHeight: 0 }}>
         {pillars.map(([name, m, d, when], i) => (
+          illustrated ? (
+          <div key={name} style={card(t, { padding: '12px 14px', display: 'flex', flexDirection: 'column', minHeight: 0, overflow: 'hidden' })}>
+            <div style={{ height: 96, flexShrink: 0, borderRadius: 6, overflow: 'hidden', background: t.accentSoft, marginBottom: 8 }}>
+              <img data-testid={`img-offering-${OFFERING_IMAGES[i]}`} src={pub(`/samples/offerings-${OFFERING_IMAGES[i]}.jpg`)} alt={name} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+            </div>
+            <div style={{ display: 'flex', gap: 12, flexShrink: 0 }}>
+              <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 6 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <span style={{ fontFamily: MONO, fontSize: 11, color: t.accent }}>{String(i + 1).padStart(2, '0')}</span>
+                  <span style={{ fontSize: 16, fontWeight: 700, color: t.ink, lineHeight: 1.2 }}>{name}</span>
+                </div>
+                <span style={tag(t, true)}>{m}% gross margin</span>
+              </div>
+            </div>
+            <p style={{ fontSize: 11.5, color: t.muted, lineHeight: 1.45, margin: '8px 0 0' }}>{d}</p>
+            <div style={{ marginTop: 'auto', fontFamily: MONO, fontSize: 10, lineHeight: 1.4, color: t.muted, borderTop: `1px dashed ${t.line}`, paddingTop: 6 }}>{when}</div>
+          </div>
+          ) : (
           <div key={name} style={card(t, { padding: '18px 20px', display: 'flex', flexDirection: 'column' })}>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 10 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -277,6 +299,7 @@ function Pillars({ state, t }: BodyProps) {
             <p style={{ fontSize: 12.5, color: t.muted, lineHeight: 1.55, margin: '10px 0 0' }}>{d}</p>
             <div style={{ marginTop: 'auto', fontFamily: MONO, fontSize: 10.5, lineHeight: 1.5, color: t.muted, borderTop: `1px dashed ${t.line}`, paddingTop: 8 }}>{when}</div>
           </div>
+          )
         ))}
       </div>
     </div>

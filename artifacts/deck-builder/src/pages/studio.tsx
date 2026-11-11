@@ -53,7 +53,7 @@ export function Studio() {
         <main className="mx-auto max-w-[1600px] px-4 py-6 sm:px-8">
           {previewBlocked && <p role="alert" className="mb-4 text-sm text-destructive">Your browser blocked the preview tab. Allow pop-ups for this site, then click Live preview again.</p>}
           <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-            <p className="text-sm text-muted-foreground">Shape the brand, plan the numbers, and build your nine-slide investor deck.</p>
+            <p className="text-sm text-muted-foreground">Shape the brand, plan the numbers, and build your ten-slide investor deck.</p>
             <span role="status" className="font-mono text-[11px] text-muted-foreground">
               {tier === 'memory' ? 'Not saved · browser storage unavailable' : savedAt ? 'Saved in this browser' : 'Saving…'}
             </span>
@@ -69,7 +69,7 @@ export function Studio() {
           </nav>
           <section aria-label={active.label}><Content /></section>
           <footer className="mt-8 border-t pt-4 text-xs leading-relaxed text-muted-foreground">
-            A4 landscape · 9 slides · Edits and uploaded assets stay in this browser.
+            A4 landscape · 10 slides · Edits and uploaded assets stay in this browser.
             Project PDF history is not durable shared storage in production; download important PDFs to keep a copy.
           </footer>
         </main>

@@ -3,6 +3,7 @@ import { clearState, loadState, migrate, saveState } from './persistence';
 import { createDefaultState } from './defaults';
 import { compute, type Model } from './financial';
 import type { DeckState, PersistTier } from './types';
+import { SLIDE_COUNT } from '@/components/deck/constants';
 import { withApprovedScenario } from './approved-scenario';
 
 interface Ctx {
@@ -58,7 +59,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     const src = raw && typeof raw === 'object' && 'state' in (raw as object) ? (raw as { state: unknown }).state : raw;
     setState(migrate(src, false, false));
   }, []);
-  const setSlide = useCallback((n: number) => setSlideRaw(Math.max(0, Math.min(8, n))), []);
+  const setSlide = useCallback((n: number) => setSlideRaw(Math.max(0, Math.min(SLIDE_COUNT - 1, n))), []);
   const model = useMemo(() => compute(state.fin), [state.fin]);
 
   return (
