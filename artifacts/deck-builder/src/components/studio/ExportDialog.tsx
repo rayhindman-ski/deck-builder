@@ -14,7 +14,7 @@ export function ExportDialog({ open, onOpenChange, saver }: { open: boolean; onO
   const next = (versions[0]?.version ?? 0) + 1;
 
   const options: { mode: ExportMode; icon: typeof Download; title: string; body: string }[] = [
-    { mode: 'download', icon: FileDown, title: 'Local PDF download', body: 'Renders all 10 slides, archives the next version in the project, then downloads that exact file.' },
+    { mode: 'download', icon: FileDown, title: 'Local PDF download', body: 'Renders all 9 slides, archives the next version in the project, then downloads that exact file.' },
     { mode: 'project', icon: Archive, title: 'Save in project', body: 'Renders and archives to doc/decks only. Nothing is downloaded.' },
     { mode: 'print', icon: Printer, title: 'Native print', body: 'Archives a version first, then opens the browser print dialog titled with that version. Choose Save as PDF there; the browser decides the final filename and folder, and we cannot detect whether you completed or cancelled.' },
   ];

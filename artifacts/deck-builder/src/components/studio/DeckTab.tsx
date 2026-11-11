@@ -14,7 +14,7 @@ export function DeckTab() {
   const { state, model, slide, setSlide, patch } = useStore();
   const [scenario, setScenario] = useState(false);
   const strip = useRef<HTMLDivElement>(null);
-  const scenarioCapable = slide >= 5 && slide <= 8;
+  const scenarioCapable = slide >= 4 && slide <= 7;
 
   useEffect(() => {
     strip.current?.querySelector<HTMLElement>(`[data-idx="${slide}"]`)?.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
@@ -57,7 +57,7 @@ export function DeckTab() {
         </label>
       </div>
 
-      {slide === 5 && <ShiftAssumptions />}
+      {slide === 4 && <ShiftAssumptions />}
       <div className="rounded-xl bg-[hsl(var(--muted))] p-3 sm:p-6">
         <div key={slide} className="overflow-hidden rounded-md slide-shadow rise">
           <ScaledA4>

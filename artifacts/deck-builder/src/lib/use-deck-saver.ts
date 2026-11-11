@@ -6,7 +6,7 @@ import { blobToBase64, downloadBlob, errorMessage, renderDeckPdf } from './expor
 export type ExportMode = 'download' | 'project' | 'print';
 
 /**
- * Every export path renders the current 10 slides to a PDF and archives it via saveDeckExport,
+ * Every export path renders the current 9 slides to a PDF and archives it via saveDeckExport,
  * which allocates the next vNN on the server. Then the mode-specific action runs.
  */
 export function useDeckSaver() {
