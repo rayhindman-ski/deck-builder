@@ -81,7 +81,7 @@ export function Slide(p: SlideProps) {
       {!isCover && (
         <header style={{ height: 58, padding: '0 44px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: `1px solid ${t.line}`, margin: '14px 14px 0' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            {s.showMiniLogo && logo && <Emblem src={logo.src} invert={false} width={77} />}
+            {s.showMiniLogo && logo && <Emblem src={logo.src} invert={false} width={77 * 1.75} />}
           </div>
           {s.showSection && <span style={{ fontSize: 12, letterSpacing: '0.1em', textTransform: 'uppercase', color: t.muted }}>{sectionLabel}</span>}
         </header>
